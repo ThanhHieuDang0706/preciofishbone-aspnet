@@ -22,6 +22,8 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
         public Type ItemType { get; set; } = Type.File;
         public string FileExtension { get; set; } = null!;
 
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+
         public int FolderId { get; set; }
         public Folder? CurrentFolder { get; set; }
     }

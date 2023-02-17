@@ -26,6 +26,8 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
 
         public Folder? ParentFolder { get; set; }
 
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+
         public static Folder TopFolder = new() { Id = -1, Name = "Top Folder", Modified = DateTime.Now, ModifiedBy = "System", ItemType = Type.Folder, Folders = new List<Folder>(), Files = new List<MyFile>(), ParentFolderId = null, ParentFolder = null };
 
     }
