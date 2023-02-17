@@ -19,7 +19,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FolderDto>>> GetFolders(int parentFolderId)
+        public async Task<ActionResult<IEnumerable<FolderDto>>> GetFolders(int parentFolderId = -1)
         {
             try
             {
