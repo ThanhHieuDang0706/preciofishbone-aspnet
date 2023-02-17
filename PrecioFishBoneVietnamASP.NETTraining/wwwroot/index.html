@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./dist/css/home-page.css" />
+    <script src="./dist/js/home-page.js"></script>
+    <title>HTML/CSS Training</title>
+  </head>
+
+  <body>
+    <div class="container position-relative py-4 px-3 mx-auto">
+      <!-- toolbar -->
+
+      <nav class="navbar navbar-expand-lg navbar-collapse-md navbar-light bg-light p-0">
+        <!-- Toggle when mobile screen -->
+        <button
+          class="w-100 navbar-bg-grey text-right navbar-toggler border-0"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-bg-grey navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item nav-item-spacing dropdown">
+              <a
+                type="button"
+                id="dropdownNew"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                class="nav-link dropdown-toggle"
+                href="#"
+              >
+                <i class="purple-icon fa fa-thin fa-plus"></i>
+                New
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownNew">
+                <a class="dropdown-item" id="newFileButton" href="#" data-toggle="modal" data-target="#modal-form"
+                  >File</a
+                >
+                <a class="dropdown-item" id="newFolderButton" href="#" data-toggle="modal" data-target="#modal-form"
+                  >Folder</a
+                >
+              </div>
+            </li>
+
+            <li class="nav-item nav-item-spacing dropdown">
+              <a class="nav-link dropdown-toggle" href="#">
+                <i class="purple-icon fa fa-upload"></i>
+                Upload
+              </a>
+            </li>
+
+            <li class="nav-item nav-item-spacing dropdown">
+              <a class="nav-link dropdown-toggle" href="#">
+                <i class="purple-icon fa fa-rotate"></i>
+                Sync
+              </a>
+            </li>
+
+            <li class="nav-item nav-item-spacing">
+              <a class="nav-link" href="#">
+                <i class="text-success fa fa-file-excel"></i>
+                Export To Excel
+              </a>
+            </li>
+
+            <li class="nav-item nav-item-spacing dropdown">
+              <a class="nav-link dropdown-toggle" href="#">
+                <i class="purple-icon fa fa-stairs"></i>
+                Flow
+              </a>
+            </li>
+
+            <li class="nav-item nav-item-spacing">
+              <a class="nav-link" href="#">
+                <i class="fa fa-ellipsis"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Wrapper of main content -->
+      <section id="main-content" class="d-sm-block px-sm-2 d-lg-block px-4 py-4 position-relative">
+        <!-- header -->
+        <header class="d-sm-block mx-sm-0 mb-2 d-lg-block mb-4 mx-lg-4">
+          <h2 class="font-weight-light">Documents</h2>
+        </header>
+
+        <!-- table for large screens -->
+        <table class="table table-sm file-table"></table>
+      </section>
+    </div>
+
+    <!-- button to go back -->
+    <button type="button" class="position-absolute btn circle-button" id="back-button">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+  </body>
+</html>
