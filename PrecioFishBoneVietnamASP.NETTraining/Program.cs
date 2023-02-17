@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
+using PrecioFishboneVietnamASP.NETTraining.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,8 @@ builder.Services.AddDbContext<ItemContext>
     (dbContextOptions => dbContextOptions.UseSqlServer(
         builder.Configuration["ConnectionStrings:ASPTrainingDBConnectionString"]));
 
-Console.WriteLine(builder.Configuration["ConnectionStrings:ASPTrainingDBConnectionString"]);
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+
 
 var app = builder.Build();
 

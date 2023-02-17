@@ -13,5 +13,24 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+            modelBuilder.Entity<Folder>()
+                .HasMany(folder => folder.Folders)
+                .WithOne(folder => folder.ParentFolder)
+                .HasForeignKey(folder => folder.ParentFolderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Folder>()
+                .HasMany(folder => folder.Files)
+                .WithOne(file => file.CurrentFolder!)
+                .HasForeignKey(file => file.FolderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // initalize top folder
+            modelBuilder.Entity<Folder>().HasData(Folder.TopFolder);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

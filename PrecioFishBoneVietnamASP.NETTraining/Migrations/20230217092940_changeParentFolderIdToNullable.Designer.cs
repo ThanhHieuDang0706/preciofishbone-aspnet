@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 
@@ -11,9 +12,10 @@ using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 namespace PrecioFishboneVietnamASP.NETTraining.Migrations
 {
     [DbContext(typeof(ItemContext))]
-    partial class ItemContextModelSnapshot : ModelSnapshot
+    [Migration("20230217092940_changeParentFolderIdToNullable")]
+    partial class changeParentFolderIdToNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,16 +55,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.Migrations
                     b.HasIndex("ParentFolderId");
 
                     b.ToTable("Folders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            ItemType = 1,
-                            Modified = new DateTime(2023, 2, 17, 16, 34, 58, 434, DateTimeKind.Local).AddTicks(4673),
-                            ModifiedBy = "System",
-                            Name = "Top Folder"
-                        });
                 });
 
             modelBuilder.Entity("PrecioFishboneVietnamASP.NETTraining.Entities.MyFile", b =>

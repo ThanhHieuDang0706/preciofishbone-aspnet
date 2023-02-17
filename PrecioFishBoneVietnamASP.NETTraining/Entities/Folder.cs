@@ -22,8 +22,11 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
 
         public ICollection<MyFile> Files { get; set; } = new List<MyFile>();
 
-        public int ParentFolderId { get; set; } 
+        public int? ParentFolderId { get; set; }
 
         public Folder? ParentFolder { get; set; }
+
+        public static Folder TopFolder = new Folder { Id = -1, Name = "Top Folder", Modified = DateTime.Now, ModifiedBy = "System", ItemType = Type.Folder, Folders = new List<Folder>(), Files = new List<MyFile>(), ParentFolderId = null, ParentFolder = null };
+
     }
 }

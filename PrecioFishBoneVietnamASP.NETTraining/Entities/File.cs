@@ -28,6 +28,5 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
 
         public int FolderId { get; set; }
         public Folder? CurrentFolder { get; set; }
-
     }
 }
