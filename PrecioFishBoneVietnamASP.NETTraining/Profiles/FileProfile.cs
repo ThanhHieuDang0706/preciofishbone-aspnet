@@ -4,9 +4,9 @@ using PrecioFishboneVietnamASP.NETTraining.Models;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Profiles
 {
-    public class FileProfiles : Profile
+    public class FileProfile : Profile
     {
-        public FileProfiles ()
+        public FileProfile ()
         {
             CreateMap<MyFile, FileDto>();
         }

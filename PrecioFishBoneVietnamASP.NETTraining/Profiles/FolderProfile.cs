@@ -4,9 +4,9 @@ using PrecioFishboneVietnamASP.NETTraining.Models;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Profiles
 {
-    public class FolderProfiles : Profile
+    public class FolderProfile : Profile
     {
-        public FolderProfiles()
+        public FolderProfile()
         {
             CreateMap<Folder, FolderDto>();
         }
