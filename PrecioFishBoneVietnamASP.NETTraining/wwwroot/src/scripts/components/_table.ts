@@ -1,12 +1,11 @@
 import $ from 'jquery';
 import { parseZone } from 'moment';
-import Folder, { FolderHelper } from '../models/_folder';
+import { FolderHelper } from '../models/_folder';
 import { folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
 import MyFile from '../models/_file';
-import { fillInput } from './_modal';
 import renderSpinner, { removeSpinner } from './_loading';
 import { HomeState } from '../types/_homepage';
-import Item, { ItemType } from '../types/_item';
+import Item from '../types/_item';
 
 const tableHeader = `<thead>
 <tr>
@@ -119,7 +118,7 @@ export const renderTable = async (state: HomeState) => {
     if (res.error) {
       // process errors here
     } else {
-      items = res.items;
+      items = <Item[]>res.items;
     }
   });
 

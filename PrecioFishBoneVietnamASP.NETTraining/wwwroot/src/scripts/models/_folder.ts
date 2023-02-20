@@ -49,7 +49,7 @@ export default class Folder implements IFolder {
 export class FolderHelper {
   folderService: IFolderServices = new FolderServices();
 
-  getFolderInfoById = async (folderId: number, cb: (data: any) => void): Promise<IFolder | void> => {
+  getFolderInfoById = async (folderId: number, cb: (data: Record<string, unknown>) => void): Promise<IFolder | void> => {
     try {
       const folderData = await this.folderService.getFolderInfoById(folderId);
       cb({ data: folderData });
@@ -58,7 +58,7 @@ export class FolderHelper {
     }
   };
 
-  getFolderWithItems = async (folderId: number, cb: (data: any) => void): Promise<IFolder | void> => {
+  getFolderWithItems = async (folderId: number, cb: (data: Record<string, unknown>) => void): Promise<IFolder | void> => {
     try {
       const folderData = await this.folderService.getFolderWithItemsById(folderId);
       cb({ data: folderData });
@@ -67,7 +67,7 @@ export class FolderHelper {
     }
   };
 
-  createFolder = async (name: string, parentFolderId: number, modifiedBy: string, cb: (data: any) => void) => {
+  createFolder = async (name: string, parentFolderId: number, modifiedBy: string, cb: (data: Record<string, unknown>) => void) => {
     try {
       const folderData = await this.folderService.createFolder({ name, parentFolderId, modifiedBy });
       cb({ data: folderData });

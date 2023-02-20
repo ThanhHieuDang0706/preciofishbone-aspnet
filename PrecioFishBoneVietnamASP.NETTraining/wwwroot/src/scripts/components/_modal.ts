@@ -48,6 +48,31 @@ const modal = () => `<!-- New File Modal -->
   </div>
 </div>`;
 
+// create new file button
+const addNewFileClickEvent = () => {
+  $('#newFileButton').on('click', () => {
+    clearInput();
+    $('label[for="name"]').text('File name');
+    $('#modal-title').text('Create new file');
+    const modalOkButton = $('#modal-ok-button');
+    modalOkButton.text('Create');
+    modalOkButton.attr('data-action', 'create');
+  });
+};
+
+// clicking new folder button
+const addNewFolderClickEvent = () => {
+  $('#newFolderButton').on('click', () => {
+    clearInput();
+    $('label[for="name"]').text('Folder name');
+    $('#modal-title').text('Create new folder');
+    $('.modified').hide();
+    const modalOkButton = $('#modal-ok-button');
+    modalOkButton.text('Create');
+    modalOkButton.attr('data-action', 'create');
+  });
+};
+
 const renderModalForm = () => {
   $('#main-content').append(modal);
   addNewFolderClickEvent();
@@ -64,31 +89,6 @@ export const fillInput = (item: Item, id: number) => {
 
 export const clearModal = () => {
   $('#modal-form').remove();
-};
-
-// create new file button
-export const addNewFileClickEvent = () => {
-  $('#newFileButton').on('click', () => {
-    clearInput();
-    $('label[for="name"]').text('File name');
-    $('#modal-title').text('Create new file');
-    const modalOkButton = $('#modal-ok-button');
-    modalOkButton.text('Create');
-    modalOkButton.attr('data-action', 'create');
-  });
-};
-
-// clicking new folder button
-export const addNewFolderClickEvent = () => {
-  $('#newFolderButton').on('click', () => {
-    clearInput();
-    $('label[for="name"]').text('Folder name');
-    $('#modal-title').text('Create new folder');
-    $('.modified').hide();
-    const modalOkButton = $('#modal-ok-button');
-    modalOkButton.text('Create');
-    modalOkButton.attr('data-action', 'create');
-  });
 };
 
 export const onSubmitModalForm = (state: HomeState) => {
@@ -122,7 +122,5 @@ export const onSubmitModalForm = (state: HomeState) => {
     }
   });
 };
-
-const onSubmitCreateFolder = () => {};
 
 export default renderModalForm;
