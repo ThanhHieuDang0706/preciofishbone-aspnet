@@ -8,15 +8,15 @@ export default class MyFile implements IFile {
 
   fileExtension: string;
 
-  modified: number;
+  modified: string;
 
-  modifiedBy: string;
+  modifiedBy: string = Date.now().toString();
 
   itemType: ItemType = ItemType.File;
 
-  createdTime: number;
+  createdTime: string = Date.now().toString();
 
-  constructor(id: number, name: string, fileExtension: string, modified: number, modifiedBy: string, createdTime: number = Date.now()) {
+  constructor(id: number, name: string, fileExtension: string, modified: string, modifiedBy: string, createdTime: string = Date.now().toString()) {
     this.id = id;
     this.name = name;
     this.fileExtension = fileExtension;

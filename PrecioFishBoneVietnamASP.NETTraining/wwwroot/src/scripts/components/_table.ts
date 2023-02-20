@@ -2,10 +2,11 @@ import $ from 'jquery';
 import { parseZone } from 'moment';
 import { FolderHelper } from '../models/_folder';
 import { folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
-import MyFile from '../models/_file';
 import renderSpinner, { removeSpinner } from './_loading';
 import { HomeState } from '../types/_homepage';
 import Item from '../types/_item';
+import IFile from '../types/_file';
+import Folder from '../types/_folder';
 
 const tableHeader = `<thead>
 <tr>
@@ -44,7 +45,7 @@ const renderTableCell = (item: Item) => `
     </div>
 
     <div class="col-xs-9">
-      ${!isFile(item) ? folderIcon : mapFileExtensionToIcon((<MyFile>item).fileExtension)}
+      ${!isFile(item) ? folderIcon : mapFileExtensionToIcon((<IFile>item).fileExtension)}
     </div>
   </td>
 
@@ -54,7 +55,7 @@ const renderTableCell = (item: Item) => `
     </div>
 
     <div class="col-xs-9">
-      ${!isFile(item) ? item.name : `${(<MyFile>item).name}.${(<MyFile>item).fileExtension}`}
+      ${!isFile(item) ? item.name : `${(<IFile>item).name}.${(<IFile>item).fileExtension}`}
     </div>
   </td>
 
@@ -108,17 +109,18 @@ export const renderTable = async (state: HomeState) => {
     $('#back-button').show();
   }
 
-  let items: Array<Item> = [];
-
   // add loading animation
   renderSpinner();
+  let folder: Folder;
+  let items: Array<Item> = [];
 
-  folderHelper.getFolderWithItems(state.currentFolderId, res => {
+  await folderHelper.getFolderWithItems(state.currentFolderId, res => {
     removeSpinner();
     if (res.error) {
       // process errors here
     } else {
-      items = <Item[]>res.items;
+      folder = <Folder>res.data;
+      items = folder.items;
     }
   });
 

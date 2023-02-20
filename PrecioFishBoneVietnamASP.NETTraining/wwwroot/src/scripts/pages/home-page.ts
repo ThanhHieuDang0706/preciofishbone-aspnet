@@ -14,7 +14,7 @@ ready(async () => {
   };
 
   // render intial view
-  renderModalForm();
+  renderModalForm(state);
   renderTable(state);
 
   // $('#back-button').on('click', () => {

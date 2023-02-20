@@ -73,25 +73,7 @@ const addNewFolderClickEvent = () => {
   });
 };
 
-const renderModalForm = () => {
-  $('#main-content').append(modal);
-  addNewFolderClickEvent();
-  addNewFileClickEvent();
-};
-
-export const fillInput = (item: Item, id: number) => {
-  // set id in the input so editor can find it
-  $('#modal-title').attr('data-id', id);
-  $('#name').val(item.itemType === ItemType.File ? `${item.name}.${(<MyFile>item).fileExtension}` : item.name);
-  $('#modified').val(new Date(item.modified).toISOString().slice(0, 16));
-  $('#modifiedBy').val(item.modifiedBy);
-};
-
-export const clearModal = () => {
-  $('#modal-form').remove();
-};
-
-export const onSubmitModalForm = (state: HomeState) => {
+const addSubmitFormEvent = (state: HomeState) => {
   // clicking ok button
   // when clicking ok button in modal form
   $('#modal-ok-button').on('click', () => {
@@ -115,12 +97,32 @@ export const onSubmitModalForm = (state: HomeState) => {
             // process error when creating
           } else {
             renderTable(state);
+            $('#modal-form').modal('hide');
             clearInput();
           }
         });
       }
     }
   });
+};
+
+const renderModalForm = (state: HomeState) => {
+  $('#main-content').append(modal);
+  addNewFolderClickEvent();
+  addNewFileClickEvent();
+  addSubmitFormEvent(state);
+};
+
+export const fillInput = (item: Item, id: number) => {
+  // set id in the input so editor can find it
+  $('#modal-title').attr('data-id', id);
+  $('#name').val(item.itemType === ItemType.File ? `${item.name}.${(<MyFile>item).fileExtension}` : item.name);
+  $('#modified').val(new Date(item.modified).toISOString().slice(0, 16));
+  $('#modifiedBy').val(item.modifiedBy);
+};
+
+export const clearModal = () => {
+  $('#modal-form').remove();
 };
 
 export default renderModalForm;

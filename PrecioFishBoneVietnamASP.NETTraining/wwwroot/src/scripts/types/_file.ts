@@ -8,7 +8,7 @@ export type FileUpdate = {
   id: number;
   name: string;
   fileExtension: string;
-  modified: number;
+  modified: string;
   modifiedBy: string;
   fileUrl: string;
 };
