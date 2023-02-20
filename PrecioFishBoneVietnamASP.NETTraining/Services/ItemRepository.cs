@@ -13,22 +13,37 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<MyFile>> GetFilesInFolder(int folderId)
-        {
-            return await _context.Files
-                .Where(file => file.FolderId == folderId)
-                .AsNoTracking()
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Folder>> GetFoldersInFolder(int parentFolderId)
+        public async Task<Folder?> GetItemsInFolders(int folderId)
         {
             return await _context.Folders
-                .Where(folder => folder.ParentFolderId == parentFolderId)
-                .Include(folder => folder.Folders)
+                .Where(folder => folder.Id == folderId)
                 .Include(folder => folder.Files)
+                .Include(folder => folder.Folders)
                 .AsNoTracking()
-                .ToListAsync();
+                .FirstOrDefaultAsync();
+        }
+
+        /// Get data only in Folders table
+        public async Task<Folder?> GetFolder(int folderId)
+        {
+            return await _context.Folders
+                .Where(folder => folder.Id == folderId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task AddFolder(Folder folder, int parentFolderId)
+        {
+            var parentFolder = await GetFolder(parentFolderId);
+            if (parentFolder != null)
+            {
+                parentFolder.Folders.Add(folder);
+            }
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
         }
     }
 }

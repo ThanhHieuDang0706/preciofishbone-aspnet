@@ -5,9 +5,12 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
 {
     public interface IItemRepository
     {
-        Task<IEnumerable<MyFile>> GetFilesInFolder(int folderId);
+        // Files
+        Task<Folder?> GetItemsInFolders(int folderId);
 
-        Task<IEnumerable<Folder>> GetFoldersInFolder(int folderId);
-
+        // Folders
+        Task<Folder?> GetFolder(int folderId);
+        Task AddFolder(Folder folder, int parentFolderId);
+        Task<bool> SaveAsync();
     }
 }

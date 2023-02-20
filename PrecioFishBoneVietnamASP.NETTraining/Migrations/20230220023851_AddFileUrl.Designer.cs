@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 
@@ -11,9 +12,10 @@ using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 namespace PrecioFishboneVietnamASP.NETTraining.Migrations
 {
     [DbContext(typeof(ItemContext))]
-    partial class ItemContextModelSnapshot : ModelSnapshot
+    [Migration("20230220023851_AddFileUrl")]
+    partial class AddFileUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +63,9 @@ namespace PrecioFishboneVietnamASP.NETTraining.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedTime = new DateTime(2023, 2, 20, 9, 40, 40, 201, DateTimeKind.Local).AddTicks(5875),
+                            CreatedTime = new DateTime(2023, 2, 20, 9, 38, 51, 21, DateTimeKind.Local).AddTicks(1520),
                             ItemType = 1,
-                            Modified = new DateTime(2023, 2, 20, 9, 40, 40, 202, DateTimeKind.Local).AddTicks(6963),
+                            Modified = new DateTime(2023, 2, 20, 9, 38, 51, 22, DateTimeKind.Local).AddTicks(6966),
                             ModifiedBy = "System",
                             Name = "Top Folder"
                         });
@@ -84,10 +86,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FileUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("FolderId")
                         .HasColumnType("int");
 
@@ -102,6 +100,10 @@ namespace PrecioFishboneVietnamASP.NETTraining.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("fileUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

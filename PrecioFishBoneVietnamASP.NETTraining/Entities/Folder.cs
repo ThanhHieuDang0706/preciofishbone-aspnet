@@ -12,8 +12,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
         [MaxLength(50)]
         public string Name { get; set; } = null!;
 
-        [Required]
-        public DateTime Modified { get; set; }
+        [Required] public DateTime Modified { get; set; } = DateTime.Now;
 
         [Required]
         public string ModifiedBy { get; set; } = null!;

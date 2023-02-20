@@ -28,7 +28,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
                 .HasForeignKey(file => file.FolderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // initalize top folder
+            // initialize root folder
             modelBuilder.Entity<Folder>().HasData(Folder.TopFolder);
             base.OnModelCreating(modelBuilder);
         }

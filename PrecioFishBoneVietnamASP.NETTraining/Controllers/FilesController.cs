@@ -7,7 +7,7 @@ using PrecioFishboneVietnamASP.NETTraining.Services;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 {
-    [Route("api/folders/{folderId}/files")]
+    [Route("api/files")]
     [ApiController]
     public class Files : ControllerBase
     {
@@ -20,17 +20,9 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FileDto>>> GetFiles(int folderId)
+        public Task<IActionResult> GetFile(int fileId)
         {
-            try
-            {
-                var fileEntities = await _itemRepository.GetFilesInFolder(folderId);
-                return Ok(_mapper.Map<IEnumerable<FileDto>>(fileEntities));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            throw new NotImplementedException();
         }
     }
 }

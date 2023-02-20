@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 using PrecioFishboneVietnamASP.NETTraining.Services;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 {
-    [Route("api/folders/{parentFolderId}/folders")]
+    [Route("api/folders")]
     [ApiController]
     public class FoldersController : ControllerBase
     {
@@ -18,18 +19,54 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<FolderDto>>> GetFolders(int parentFolderId = -1)
+        [HttpGet("{folderId}", Name = "GetFolderById")]
+        public async Task<IActionResult> GetFolderById(int folderId = -1, bool getWithItems = false)
         {
             try
             {
-                var folderEntities = await _itemRepository.GetFoldersInFolder(parentFolderId);
-                return Ok(_mapper.Map<IEnumerable<FolderDto>>(folderEntities));
+                // check if parentFolderId Exists
+                var folder = await _itemRepository.GetFolder(folderId);
+                
+                if (folder == null)
+                {
+                    return NotFound(new
+                    {
+                        Message = "Current folder does not exist!"
+                    });
+                }
+
+                if (getWithItems)
+                {
+                    var folderEntity = await _itemRepository.GetItemsInFolders(folderId);
+                    return Ok(_mapper.Map<FolderWithItemsDto>(folderEntity));
+                }
+
+                return Ok(_mapper.Map<FolderDto>(folder));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFolder(FolderForCreationDto folder)
+        {
+            var parentFolder = await _itemRepository.GetFolder(folder.ParentFolderId);
+            if (parentFolder == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Current folder does not exist!"
+                });
+            }
+            var folderEntity = _mapper.Map<Folder>(folder.ParentFolderId);
+            await _itemRepository.AddFolder(folderEntity, folder.ParentFolderId);
+            await _itemRepository.SaveAsync();
+
+            var folderToReturn = _mapper.Map<FolderDto>(folderEntity);
+
+            return CreatedAtRoute("GetFolderById", new { folderId = folderToReturn.Id }, folderToReturn);
         }
 
     }

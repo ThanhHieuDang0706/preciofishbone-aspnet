@@ -8,7 +8,9 @@ namespace PrecioFishboneVietnamASP.NETTraining.Profiles
     {
         public FolderProfile()
         {
+            CreateMap<Folder, FolderWithItemsDto>();
             CreateMap<Folder, FolderDto>();
+            CreateMap<FolderForCreationDto, Folder>();
         }
     }
 }
