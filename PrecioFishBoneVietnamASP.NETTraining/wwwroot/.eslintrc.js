@@ -18,5 +18,8 @@ module.exports = {
     'no-shadow': 'off',
     'consistent-return': 'off',
     'import/no-cycle': 'off',
+
+    'import/prefer-default-export': 'off',
+    'max-classes-per-file': ['error', { ignoreExpressions: true, max: 2 }],
   },
 };

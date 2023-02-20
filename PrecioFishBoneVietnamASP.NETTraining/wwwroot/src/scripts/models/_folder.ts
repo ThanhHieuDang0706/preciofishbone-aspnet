@@ -1,16 +1,8 @@
-import IFolder from '../interfaces/_folder';
-import {
-  addTopFolder,
-  getTopLevelFolder,
-  getSelectedFolder,
-  getAllFolders,
-  saveFileToFolder,
-  overwriteAllFolders,
-  deleteFolderFromLocalStorage,
-  updateFolderAndSubFolder,
-} from '../services/_folder';
-import MyFile from './_file';
-import Item, { ItemType } from '../interfaces/_item';
+import IFolder from '../types/_folder';
+import IFile from '../types/_file';
+import { ItemType } from '../types/_item';
+import FolderServices from '../services/_folderServices';
+import IFolderServices from '../services/_IFolderServices';
 
 export default class Folder implements IFolder {
   id: number;
@@ -19,7 +11,11 @@ export default class Folder implements IFolder {
 
   parentFolder: number | null;
 
-  items: Array<Item>;
+  files: Array<IFile>;
+
+  folders: Array<IFolder>;
+
+  items: Array<IFile | IFolder>;
 
   modified: number;
 
@@ -27,97 +23,56 @@ export default class Folder implements IFolder {
 
   itemType: ItemType = ItemType.Folder;
 
-  public static initialFolder = new Folder(0, 'top', [], null, Date.now(), '');
+  createdTime: number = Date.now();
 
-  constructor(id: number, name: string, items: Array<Item>, parentFolder: number | null, modified: number, modifiedBy: string) {
+  constructor(
+    id: number,
+    name: string,
+    files: Array<IFile>,
+    parentFolder: number | null,
+    modified: number,
+    modifiedBy: string,
+    folders: Array<IFolder> = [],
+  ) {
     this.id = id;
     this.name = name;
-    this.items = items;
+    this.files = files;
     this.parentFolder = parentFolder;
+    this.folders = folders;
     this.modified = modified;
     this.modifiedBy = modifiedBy;
+    this.items = [...this.files, ...this.folders];
+    this.items.sort((a, b) => b.createdTime - a.createdTime);
   }
+}
 
-  static loadTopFolder = (): Folder => {
-    // load folder with parentFolder = null, if not existed in local storage then create and return it
-    const topLevelFolder = getTopLevelFolder();
-    if (topLevelFolder) {
-      return topLevelFolder as Folder;
-    }
-    addTopFolder();
-    const newTopLevelFolder = getTopLevelFolder();
-    return newTopLevelFolder as Folder;
-  };
+export class FolderHelper {
+  folderService: IFolderServices = new FolderServices();
 
-  static loadAllFolders = (): Folder[] => {
-    return getAllFolders();
-  };
-
-  static loadSelectedFolder = (id: number): Folder => {
-    // load folder with id = id
-    const selectedFolder = getSelectedFolder(id) as Folder;
-    return selectedFolder;
-  };
-
-  static createNewFolder = (name: string, modified: number, modifiedBy: string, parentFolderId: number): Folder => {
-    // create new folder with name and parentFolderId
-    const largestId = Math.max(...Folder.loadAllFolders().map(folder => folder.id)); // gen new id by adding the largest id to 1
-    const newFolder = new Folder(largestId + 1, name, [], parentFolderId, modified, modifiedBy);
-    return newFolder;
-  };
-
-  static saveFile(file: MyFile, currentFolderId: number): void {
-    // save file to currentFolder in local storage
-    file.saveFile();
-    return saveFileToFolder(file, currentFolderId);
-  }
-
-  save = (currentFolderId: number): void => {
-    // save this folder to local storage
-    const allFolders = Folder.loadAllFolders();
-    const currentFolderIndex = allFolders.findIndex(folder => folder.id === currentFolderId);
-    const index = allFolders.findIndex(folder => folder.id === this.id);
-
-    if (index === -1) {
-      // create
-      allFolders.push(this);
-      allFolders[currentFolderIndex].items.push(this);
-      overwriteAllFolders(allFolders);
-    } else {
-      // update
-      allFolders[index] = this;
-
-      const subFolderIndex = allFolders[currentFolderIndex].items.findIndex(folder => folder instanceof Folder && folder.id === this.id);
-
-      if (subFolderIndex !== -1) {
-        allFolders[currentFolderIndex].items[subFolderIndex] = this;
-      } else {
-        allFolders[currentFolderIndex].items.push(this);
-      }
-
-      overwriteAllFolders(allFolders);
+  getFolderInfoById = async (folderId: number, cb: (data: any) => void): Promise<IFolder | void> => {
+    try {
+      const folderData = await this.folderService.getFolderInfoById(folderId);
+      cb({ data: folderData });
+    } catch (error) {
+      return cb({ error });
     }
   };
 
-  static updateFolder(folderId: number, name: string, modified: number, modifiedBy: string, currentFolderId: number): void {
-    updateFolderAndSubFolder(folderId, name, modified, modifiedBy, currentFolderId);
-  }
-
-  static deleteFolder = (folderId: number): void => {
-    // delete the sub folders and filees and that folder from local storage
-    deleteFolderFromLocalStorage(folderId);
+  getFolderWithItems = async (folderId: number, cb: (data: any) => void): Promise<IFolder | void> => {
+    try {
+      const folderData = await this.folderService.getFolderWithItemsById(folderId);
+      cb({ data: folderData });
+    } catch (error) {
+      return cb({ error });
+    }
   };
 
-  static validateFolderInput = (name: string, modified: number, modifiedBy: string): boolean => {
-    if (name.length === 0) {
-      return false;
+  createFolder = async (name: string, parentFolderId: number, modifiedBy: string, cb: (data: any) => void) => {
+    try {
+      const folderData = await this.folderService.createFolder({ name, parentFolderId, modifiedBy });
+      cb({ data: folderData });
+    } catch (error) {
+      return cb({ error });
     }
-    if (Number.isNaN(modified)) {
-      return false;
-    }
-    if (modifiedBy.length === 0) {
-      return false;
-    }
-    return true;
   };
 }

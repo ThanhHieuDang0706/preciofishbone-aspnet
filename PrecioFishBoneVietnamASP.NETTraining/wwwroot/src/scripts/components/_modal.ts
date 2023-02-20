@@ -1,5 +1,8 @@
-import MyFile from '../interfaces/_file';
-import Item, { ItemType } from '../interfaces/_item';
+import { HomeState } from '../types/_homepage';
+import MyFile from '../types/_file';
+import Item, { ItemType } from '../types/_item';
+import { clearInput } from '../utilities/_helper';
+import { renderTable } from './_table';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -60,5 +63,56 @@ export const fillInput = (item: Item, id: number) => {
 export const clearModal = () => {
   $('#modal-form').remove();
 };
+
+// create new file button
+export const showNewFileModal = () => {
+  $('#newFileButton').on('click', () => {
+    clearInput();
+    $('label[for="name"]').text('File name');
+    $('#modal-title').text('Create new file');
+    const modalOkButton = $('#modal-ok-button');
+    modalOkButton.text('Create');
+    modalOkButton.attr('data-action', 'create');
+  });
+};
+
+// clicking new folder button
+export const showNewFolderModal = () => {
+  $('#newFolderButton').on('click', () => {
+    clearInput();
+    $('label[for="name"]').text('Folder name');
+    $('#modal-title').text('Create new folder');
+    const modalOkButton = $('#modal-ok-button');
+    modalOkButton.text('Create');
+    modalOkButton.attr('data-action', 'create');
+  });
+};
+
+export const onSubmitModalForm = (state: HomeState) => {
+  // clicking ok button
+  // when clicking ok button in modal form
+  $('#modal-ok-button').on('click', () => {
+    const action = $('#modal-ok-button').attr('data-action');
+    if (action === 'create') {
+      // folder or file
+      const type = $('#modal-title')
+        .text()
+        .includes('folder')
+        ? 'folder'
+        : 'file';
+      if (type === 'folder') {
+        const name = $('#name').val();
+        const parentFolderId = state.currentFolderId;
+
+        // TODO: Change here later => get sub(id) from cookie or somewhere
+        const modified = $('#modified').val();
+
+
+      }
+    }
+  });
+};
+
+const onSubmitCreateFolder = () => {};
 
 export default renderModalForm;

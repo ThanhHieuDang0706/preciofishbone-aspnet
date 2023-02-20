@@ -1,12 +1,12 @@
 import $ from 'jquery';
 import { parseZone } from 'moment';
-import Folder from '../models/_folder';
+import Folder, { FolderHelper } from '../models/_folder';
 import { folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
 import MyFile from '../models/_file';
 import { fillInput } from './_modal';
 import renderSpinner, { removeSpinner } from './_loading';
-import { HomeState } from '../interfaces/_homepage';
-import Item from '../interfaces/_item';
+import { HomeState } from '../types/_homepage';
+import Item, { ItemType } from '../types/_item';
 
 const tableHeader = `<thead>
 <tr>
@@ -100,102 +100,111 @@ const renderTableCell = (item: Item) => `
 </tr>
 `;
 
-const renderTable = async (state: HomeState) => {
+const folderHelper = new FolderHelper();
+
+export const renderTable = async (state: HomeState) => {
   if (state.currentFolderId === 0) {
     $('#back-button').hide();
   } else {
     $('#back-button').show();
   }
 
-  const folder = Folder.loadSelectedFolder(state.currentFolderId);
-  const { items } = folder;
-  const table = $('table');
+  let items: Array<Item> = [];
 
   // add loading animation
   renderSpinner();
-
-  setTimeout(() => {
-    table.empty();
+  
+  folderHelper.getFolderInfoById(state.currentFolderId, res => {
     removeSpinner();
-    if (items.length === 0) return table.append('<p class="text-center">There is no item in this folder</p>');
-    // add table header
-    table.append(tableHeader);
+    if (res.error) {
+      // process error here
+    } else {
+      items = res.items;
+    }
+  });
 
-    // add empty table body
-    table.append('<tbody></tbody>');
+  const table = $('table');
 
-    // get table body
-    const tableBody = table.find('tbody');
+  table.empty();
 
-    // add table content to body
-    items.forEach(item => {
-      tableBody.append(renderTableCell(item));
-    });
+  if (items.length === 0) return table.append('<p class="text-center">There is no item in this folder</p>');
+  // add table header
+  table.append(tableHeader);
 
-    // update style for folder to be clickable and add event listeners
-    tableBody.find('td.f-name').each((_, element) => {
-      const td = $(element);
-      const type = td.data('type');
-      if (type === 'folder') {
-        td.addClass('folder');
-      }
-    });
+  // add empty table body
+  table.append('<tbody></tbody>');
 
-    // add event listeners when clikcing folder => change current folder
-    $('.f-name').each((_, element) => {
-      const td = $(element);
-      const type = td.data('type');
+  // get table body
+  const tableBody = table.find('tbody');
 
-      if (type === 'folder') {
-        td.on('click', () => {
-          const folderId = parseInt(td.data('id'), 10);
-          state.setCurrentFolderId(folderId);
-          return renderTable(state);
-        });
-      }
-    });
+  // add table content to body
+  items.forEach(item => {
+    tableBody.append(renderTableCell(item));
+  });
 
-    // add event listeners when clicking edit button
-    $('button[data-action="edit"]').each((_, element) => {
-      const id = parseInt($(element).data('id'), 10);
-      const type = $(element).data('type');
+  // update style for folder to be clickable and add event listeners
+  tableBody.find('td.f-name').each((_, element) => {
+    const td = $(element);
+    const type = td.data('type');
+    if (type === 'folder') {
+      td.addClass('folder');
+    }
+  });
 
-      $(element).on('click', () => {
-        const modalOkButton = $('#modal-ok-button');
-        if (type === 'file') {
-          $("label[for='name']").text('file name');
-          $('#modal-title').text('Edit file');
-          modalOkButton.text('Save');
-          modalOkButton.attr('data-action', 'edit');
-          const file = MyFile.getFileById(id);
-          fillInput(file, id);
-        } else if (type === 'folder') {
-          $("label[for='name']").text('folder name');
-          $('#modal-title').text('Edit folder');
-          modalOkButton.text('Save');
-          modalOkButton.attr('data-action', 'edit');
-          const currentFolder = Folder.loadSelectedFolder(id);
-          fillInput(currentFolder, id);
-        }
+  // add event listeners when clikcing folder => change current folder
+  $('.f-name').each((_, element) => {
+    const td = $(element);
+    const type = td.data('type');
+
+    if (type === 'folder') {
+      td.on('click', () => {
+        const folderId = parseInt(td.data('id'), 10);
+        state.setCurrentFolderId(folderId);
+        return renderTable(state);
       });
-    });
+    }
+  });
 
-    // add event listeners when clicking delete button
-    $('button[data-action="delete"]').each((_, element) => {
-      const id = parseInt($(element).data('id'), 10);
-      const type = $(element).data('type');
-      $(element).on('click', () => {
-        if (type === 'file') {
-          MyFile.deleteFile(id, state.currentFolderId);
-          return renderTable(state);
-        }
-        if (type === 'folder') {
-          Folder.deleteFolder(id);
-          return renderTable(state);
-        }
-      });
-    });
-  }, Math.random() * 1000); // just random time to show loading animation
+  // add event listeners when clicking edit button
+  // $('button[data-action="edit"]').each((_, element) => {
+  // const id = parseInt($(element).data('id'), 10);
+  // const type = $(element).data('type');
+
+  //   $(element).on('click', () => {
+  //     const modalOkButton = $('#modal-ok-button');
+  //     if (type === 'file') {
+  // $("label[for='name']").text('file name');
+  // $('#modal-title').text('Edit file');
+  // modalOkButton.text('Save');
+  // modalOkButton.attr('data-action', 'edit');
+  // const file = MyFile.getFileById(id);
+  // fillInput(file, id);
+  //     } else if (type === 'folder') {
+  // $("label[for='name']").text('folder name');
+  // $('#modal-title').text('Edit folder');
+  // modalOkButton.text('Save');
+  // modalOkButton.attr('data-action', 'edit');
+  // const currentFolder = Folder.loadSelectedFolder(id);
+  // fillInput(currentFolder, id);
+  //     }
+  //   });
+  // });
+
+  // add event listeners when clicking delete button
+  // $('button[data-action="delete"]').each((_, element) => {
+  //   const id = parseInt($(element).data('id'), 10);
+  //   const type = $(element).data('type');
+  //   $(element).on('click', () => {
+  //     if (type === 'file') {
+  // MyFile.deleteFile(id, state.currentFolderId);
+  // return renderTable(state);
+  //     }
+  //     if (type === 'folder') {
+  // Folder.deleteFolder(id);
+  // return renderTable(state);
+  //     }
+  //   });
+  // });
 };
 
 export default renderTable;

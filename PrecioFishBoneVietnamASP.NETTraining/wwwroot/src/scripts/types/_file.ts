@@ -10,4 +10,5 @@ export type FileUpdate = {
   fileExtension: string;
   modified: number;
   modifiedBy: string;
+  fileUrl: string;
 };

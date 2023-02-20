@@ -1,6 +1,6 @@
 export enum ItemType {
-  File = 'file',
-  Folder = 'folder',
+  File = 0,
+  Folder = 1,
 }
 export default interface Item {
   id: number;
@@ -8,4 +8,5 @@ export default interface Item {
   modified: number;
   modifiedBy: string;
   itemType: ItemType;
+  createdTime: number;
 }
