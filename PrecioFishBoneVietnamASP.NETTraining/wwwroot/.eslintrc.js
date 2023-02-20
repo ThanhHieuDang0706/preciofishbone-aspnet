@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error'],
     '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-explicit-any': 'off',
     'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-shadow': 'off',

@@ -61,7 +61,7 @@ export class FolderHelper {
     }
   };
 
-  getFolderWithItems = async (folderId: number, cb: (data: Record<string, Folder | unknown>) => void): Promise<IFolder | void> => {
+  getFolderWithItems = async (folderId: number, cb: (data: Record<string, Folder | any>) => void): Promise<IFolder | void> => {
     try {
       const folderData = await this.folderService.getFolderWithItemsById(folderId);
 
