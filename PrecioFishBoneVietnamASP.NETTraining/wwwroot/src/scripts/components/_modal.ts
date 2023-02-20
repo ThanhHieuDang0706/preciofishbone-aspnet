@@ -2,7 +2,7 @@ import { HomeState } from '../types/_homepage';
 import MyFile from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
-// import { renderTable } from './_table';
+import { folderHelper, renderTable } from './_table';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -28,7 +28,7 @@ const modal = () => `<!-- New File Modal -->
             <label for="name"></label>
             <input type="text" class="form-control" id="name" placeholder="Enter file name">
           </div>
-          <div class="form-group">
+          <div class="form-group modified">
             <label for="modified">Modified</label>
             <input type="datetime-local" class="form-control" id="modified" placeholder="Modified Date">
           </div>
@@ -84,6 +84,7 @@ export const addNewFolderClickEvent = () => {
     clearInput();
     $('label[for="name"]').text('Folder name');
     $('#modal-title').text('Create new folder');
+    $('.modified').hide();
     const modalOkButton = $('#modal-ok-button');
     modalOkButton.text('Create');
     modalOkButton.attr('data-action', 'create');
@@ -103,11 +104,20 @@ export const onSubmitModalForm = (state: HomeState) => {
         ? 'folder'
         : 'file';
       if (type === 'folder') {
-        const name = $('#name').val();
+        const name = $('#name').val() as string;
         const parentFolderId = state.currentFolderId;
 
         // TODO: Change here later => get sub(id) from cookie or somewhere
-        const modified = $('#modified').val();
+        const modifiedBy = $('#modifiedBy').val() as string;
+
+        folderHelper.createFolder(name, parentFolderId, modifiedBy, data => {
+          if (data.error) {
+            // process error when creating
+          } else {
+            renderTable(state);
+            clearInput();
+          }
+        });
       }
     }
   });

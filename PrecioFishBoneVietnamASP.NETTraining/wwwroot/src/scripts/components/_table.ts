@@ -100,7 +100,7 @@ const renderTableCell = (item: Item) => `
 </tr>
 `;
 
-const folderHelper = new FolderHelper();
+export const folderHelper = new FolderHelper();
 
 export const renderTable = async (state: HomeState) => {
   if (state.currentFolderId === 0) {
