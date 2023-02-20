@@ -113,11 +113,11 @@ export const renderTable = async (state: HomeState) => {
 
   // add loading animation
   renderSpinner();
-  
-  folderHelper.getFolderInfoById(state.currentFolderId, res => {
+
+  folderHelper.getFolderWithItems(state.currentFolderId, res => {
     removeSpinner();
     if (res.error) {
-      // process error here
+      // process errors here
     } else {
       items = res.items;
     }

@@ -2,7 +2,7 @@ import { HomeState } from '../types/_homepage';
 import MyFile from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
-import { renderTable } from './_table';
+// import { renderTable } from './_table';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -50,6 +50,8 @@ const modal = () => `<!-- New File Modal -->
 
 const renderModalForm = () => {
   $('#main-content').append(modal);
+  addNewFolderClickEvent();
+  addNewFileClickEvent();
 };
 
 export const fillInput = (item: Item, id: number) => {
@@ -65,7 +67,7 @@ export const clearModal = () => {
 };
 
 // create new file button
-export const showNewFileModal = () => {
+export const addNewFileClickEvent = () => {
   $('#newFileButton').on('click', () => {
     clearInput();
     $('label[for="name"]').text('File name');
@@ -77,7 +79,7 @@ export const showNewFileModal = () => {
 };
 
 // clicking new folder button
-export const showNewFolderModal = () => {
+export const addNewFolderClickEvent = () => {
   $('#newFolderButton').on('click', () => {
     clearInput();
     $('label[for="name"]').text('Folder name');
@@ -106,8 +108,6 @@ export const onSubmitModalForm = (state: HomeState) => {
 
         // TODO: Change here later => get sub(id) from cookie or somewhere
         const modified = $('#modified').val();
-
-
       }
     }
   });

@@ -6,6 +6,11 @@ const API_URL = `${API_BASE_URL}:${PORT}`;
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
+  headers: {
+    withCredentials: true,
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  },
 });
 
 export default axiosInstance;
