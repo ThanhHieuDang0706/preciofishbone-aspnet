@@ -7,7 +7,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Models
         public int Id { get; set; }
         public Entities.Type ItemType { get; set; } = Entities.Type.Folder;
 
-        public ICollection<Folder> Folders { get; set; } = new List<Folder>();
+        public ICollection<FolderDto> Folders { get; set; } = new List<FolderDto>();
 
         public ICollection<MyFile> Files { get; set; } = new List<MyFile>();
 

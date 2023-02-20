@@ -60,7 +60,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
                     Message = "Current folder does not exist!"
                 });
             }
-            var folderEntity = _mapper.Map<Folder>(folder.ParentFolderId);
+            var folderEntity = _mapper.Map<Folder>(folder);
             await _itemRepository.AddFolder(folderEntity, folder.ParentFolderId);
             await _itemRepository.SaveAsync();
 

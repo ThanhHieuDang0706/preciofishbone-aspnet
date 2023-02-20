@@ -34,7 +34,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
 
         public async Task AddFolder(Folder folder, int parentFolderId)
         {
-            var parentFolder = await GetFolder(parentFolderId);
+            var parentFolder = await _context.Folders.Where(f => f.Id == parentFolderId).FirstOrDefaultAsync();
             if (parentFolder != null)
             {
                 parentFolder.Folders.Add(folder);

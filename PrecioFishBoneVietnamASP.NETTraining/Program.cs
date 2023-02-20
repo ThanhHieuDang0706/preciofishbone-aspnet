@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 using PrecioFishboneVietnamASP.NETTraining.Services;
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<ItemContext>
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 

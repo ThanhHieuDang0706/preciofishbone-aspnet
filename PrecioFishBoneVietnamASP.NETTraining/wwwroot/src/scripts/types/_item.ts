@@ -5,8 +5,8 @@ export enum ItemType {
 export default interface Item {
   id: number;
   name: string;
-  modified: number;
+  modified: string;
   modifiedBy: string;
   itemType: ItemType;
-  createdTime: number;
+  createdTime: string;
 }
