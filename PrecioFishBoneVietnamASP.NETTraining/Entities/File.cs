@@ -14,19 +14,18 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = String.Empty;
 
         public DateTime Modified { get; set; }
 
-        public string ModifiedBy { get; set; } = null!;
+        public string ModifiedBy { get; set; } = String.Empty;
         public Type ItemType { get; set; } = Type.File;
-        public string FileExtension { get; set; } = null!;
+        public string FileExtension { get; set; } = String.Empty;
 
         public DateTime CreatedTime { get; set; } = DateTime.Now;
 
         public int FolderId { get; set; }
         public Folder? CurrentFolder { get; set; }
-
-        public string FileUrl { get; set; } = null!;
+        public string FileUrl { get; set; } = String.Empty;
     }
 }
