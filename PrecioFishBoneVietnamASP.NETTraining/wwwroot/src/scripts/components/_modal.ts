@@ -4,7 +4,7 @@ import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
 import { folderHelper, renderTable } from './_table';
 import newFolderForm from './_form';
-import { renderFileUploader } from './_fileUpload';
+import renderFileUploader, { fileUploaderState } from './_fileUpload';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -65,13 +65,13 @@ const uploadFileUploadClickEvent = () => {
 const addSubmitFormEvent = (state: HomeState) => {
   $('#modal-ok-button').on('click', () => {
     const action = $('#modal-ok-button').attr('data-action');
+    const type = $('#modal-title')
+      .text()
+      .includes('folder')
+      ? 'folder'
+      : 'file';
+
     if (action === 'create') {
-      // folder or file
-      const type = $('#modal-title')
-        .text()
-        .includes('folder')
-        ? 'folder'
-        : 'file';
       if (type === 'folder') {
         const name = $('#name').val() as string;
         const parentFolderId = state.currentFolderId;
@@ -88,6 +88,10 @@ const addSubmitFormEvent = (state: HomeState) => {
             clearInput();
           }
         });
+      }
+    }
+    if (action === 'upload') {
+      if (type === 'file') {
       }
     }
   });

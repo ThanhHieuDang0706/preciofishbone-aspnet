@@ -15,7 +15,7 @@ ready(async () => {
 
   // render intial view
   renderModalForm(state);
-  renderTable(state);
+  await renderTable(state);
 
   // $('#back-button').on('click', () => {
   //   state.setCurrentFolderId(Folder.loadSelectedFolder(state.currentFolderId).parentFolder as number);
