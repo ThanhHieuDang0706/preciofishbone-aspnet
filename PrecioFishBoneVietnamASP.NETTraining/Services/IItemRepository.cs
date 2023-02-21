@@ -9,7 +9,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
     {
         // Files
         Task<Folder?> GetItemsInFolders(int folderId);
-        Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm, int folderId);
+        Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm);
         Task<MyFile> GetFile (int fileId);
 
         // Folders

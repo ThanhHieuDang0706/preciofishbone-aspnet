@@ -17,9 +17,10 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
+        public async Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm)
         {
             var file = fileForm.File;
+            var folderId = fileForm.FolderId;
             var folder = await _context.Folders.Where(f => f.Id == folderId).FirstOrDefaultAsync();
             if (folder != null)
             {

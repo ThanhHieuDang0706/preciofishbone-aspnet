@@ -5,7 +5,11 @@ import { clearInput } from '../utilities/_helper';
 import { folderHelper, renderTable } from './_table';
 import newFolderForm from './_form';
 import renderFileUploader, { fileUploaderState } from './_fileUpload';
+import FileForCreation from '../types/_fileForCreation';
+import { FileHelper } from '../models/_file';
+import renderSpinner, { removeSpinner } from './_loading';
 
+const fileHelper = new FileHelper();
 const modal = () => `<!-- New File Modal -->
 <div 
   data-keyboard="false" data-backdrop="static"
@@ -92,6 +96,29 @@ const addSubmitFormEvent = (state: HomeState) => {
     }
     if (action === 'upload') {
       if (type === 'file') {
+        const { file } = fileUploaderState;
+        if (file) {
+          const fileForCreation: FileForCreation = {
+            createdTime: new Date().toISOString(),
+            modified: new Date().toISOString(),
+            // FIXME: get from cookie
+            modifiedBy: 'Hieu Dang Thanh',
+            folderId: state.currentFolderId,
+            file: file as File,
+          };
+
+          renderSpinner();
+          fileHelper.uploadFile(fileForCreation, data => {
+            removeSpinner();
+            if (data.error) {
+              // process error when uploading
+            } else {
+              renderTable(state);
+              fileUploaderState.resetState();
+              $('#modal-form').modal('hide');
+            }
+          });
+        }
       }
     }
   });

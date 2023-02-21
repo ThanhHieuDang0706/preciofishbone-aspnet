@@ -55,7 +55,7 @@ const renderTableCell = (item: Item) => `
     </div>
 
     <div class="col-xs-9">
-      ${!isFile(item) ? item.name : `${(<IFile>item).name}.${(<IFile>item).fileExtension}`}
+      ${!isFile(item) ? item.name : `${(<IFile>item).name}${(<IFile>item).fileExtension}`}
     </div>
   </td>
 

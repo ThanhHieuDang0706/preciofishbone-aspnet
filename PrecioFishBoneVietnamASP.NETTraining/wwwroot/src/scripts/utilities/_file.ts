@@ -20,13 +20,16 @@ export const fileExtensionToIconMapper: Record<string, string> = {
   rar: '<i class="text-secondary fa fa-light fa-file-archive"></i>',
   mp4: '<i class="text-secondary fa fa-light fa-file-video"></i>',
   mp3: '<i class="text-secondary fa fa-light fa-file-audio"></i>',
+  png: '<i class="text-secondary fa fa-light fa-file-image"></i>',
+  jpg: '<i class="text-secondary fa fa-light fa-file-image"></i>',
+  url: '<i class="text-secondary fa fa-light fa-link"></i>',
 };
 
 export const defaultFileIcon = '<i class="text-secondary fa fa-light fa-file"></i>';
 export const folderIcon = '<i class="fa fa-regular fa-folder-open"></i>';
 
 export const mapFileExtensionToIcon = (fileExtension: string): string => {
-  return fileExtensionToIconMapper[fileExtension as keyof Record<string, string>] || defaultFileIcon;
+  return fileExtensionToIconMapper[fileExtension.slice(1) as keyof Record<string, string>] || defaultFileIcon;
 };
 
 export const parseFileExtension = (fileName: string) => {

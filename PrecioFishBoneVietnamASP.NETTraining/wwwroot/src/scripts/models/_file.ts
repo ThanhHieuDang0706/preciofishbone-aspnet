@@ -1,5 +1,8 @@
 import IFile from '../types/_file';
 import { ItemType } from '../types/_item';
+import FileForCreation from '../types/_fileForCreation';
+import IFileServices from '../services/_IFileServices';
+import FileServices from '../services/_fileServices';
 
 export default class MyFile implements IFile {
   id: number;
@@ -24,4 +27,18 @@ export default class MyFile implements IFile {
     this.modifiedBy = modifiedBy;
     this.createdTime = createdTime;
   }
+}
+
+export class FileHelper {
+  fileService: IFileServices = new FileServices();
+
+  // upload file
+  uploadFile = async (fileForCreation: FileForCreation, cb: (data: Record<string, IFile | any>) => void): Promise<IFile | void> => {
+    try {
+      const fileData = await this.fileService.uploadFile(fileForCreation);
+      cb({ data: fileData });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
 }

@@ -14,12 +14,10 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
     {
         private readonly IItemRepository _itemRepository;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public Files(IItemRepository itemRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public Files(IItemRepository itemRepository, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _mapper = mapper;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("{fileId}", Name = "GetFileById")]
@@ -29,10 +27,10 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             return Ok(_mapper.Map<FileDto>(fileEntity));
         }
 
-        [HttpPost("/upload")]
+        [HttpPost("upload")]
         public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
         {
-            var fileEntity = await _itemRepository.UploadFile(fileForm, folderId);
+            var fileEntity = await _itemRepository.UploadFile(fileForm);
 
             if (fileEntity == null)
             {
