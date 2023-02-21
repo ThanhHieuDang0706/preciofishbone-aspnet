@@ -6,9 +6,9 @@ import { ROOT_FOLDER_ID } from '../utilities/_folder';
 import { addSignInButtonEventClick, handleRedirectPromise, selectAccount } from '../auth/_authRedirect';
 
 ready(async () => {
+  handleRedirectPromise();
   selectAccount();
   addSignInButtonEventClick();
-  handleRedirectPromise();
   // state
   const state: HomeState = {
     currentFolderId: ROOT_FOLDER_ID,

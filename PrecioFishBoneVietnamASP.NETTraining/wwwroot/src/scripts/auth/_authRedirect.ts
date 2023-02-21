@@ -63,7 +63,7 @@ const handleResponse = (response: AuthenticationResult | null) => {
   if (response !== null) {
     const account = response.account as AccountInfo;
     username = account.username || '';
-    showWelcomeMessage(username);
+    updateUI(account);
   } else {
     selectAccount();
   }
@@ -83,10 +83,12 @@ export const addSignInButtonEventClick = () => {
     myMSALObj
       .loginRedirect(loginRequest)
       .then((loginResponse: any) => {
-        accountId = loginResponse.account.homeAccountId;
+        const accountInfo = loginResponse.account as AccountInfo;
+        username = accountInfo.username || '';
+        accountId = loginResponse.account.username;
 
         // Display signed-in user content, call API, etc.
-        updateUI(loginResponse);
+        updateUI(accountInfo);
       })
       .catch(error => {
         // login failure

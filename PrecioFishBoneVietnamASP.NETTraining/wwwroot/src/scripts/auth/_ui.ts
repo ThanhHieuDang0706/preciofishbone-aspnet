@@ -1,12 +1,13 @@
 import { AuthenticationResult, AccountInfo } from '@azure/msal-browser';
+import $ from 'jquery';
 
 function showWelcomeMessage(account: string) {
   // Reconfiguring DOM elements
-  console.log(account);
 }
 
-function updateUI(data: AuthenticationResult) {
-  console.log(data);
+function updateUI(accountInfo: AccountInfo) {
+  $('#account-section').empty();
+  $('#account-section').append(`<h5>Welcome ${accountInfo.name}</h5>`);
 }
 
 export { updateUI, showWelcomeMessage };
