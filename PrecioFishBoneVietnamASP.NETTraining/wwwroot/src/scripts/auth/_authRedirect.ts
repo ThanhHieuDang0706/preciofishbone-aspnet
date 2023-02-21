@@ -80,20 +80,7 @@ export const handleRedirectPromise = () => {
 
 export const addSignInButtonEventClick = () => {
   $('#sign-in-button').on('click', () => {
-    myMSALObj
-      .loginRedirect(loginRequest)
-      .then((loginResponse: any) => {
-        const accountInfo = loginResponse.account as AccountInfo;
-        username = accountInfo.username || '';
-        accountId = loginResponse.account.username;
-
-        // Display signed-in user content, call API, etc.
-        updateUI(accountInfo);
-      })
-      .catch(error => {
-        // login failure
-        console.log(error);
-      });
+    signIn();
   });
 };
 

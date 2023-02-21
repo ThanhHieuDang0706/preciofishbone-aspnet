@@ -10,7 +10,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Models
         public ICollection<FolderDto> Folders { get; set; } = new List<FolderDto>();
 
         public ICollection<MyFile> Files { get; set; } = new List<MyFile>();
-
+        
         public int? ParentFolderId { get; set; }
     }
 }
