@@ -1,4 +1,5 @@
-import { HomeState } from '../types/_homepage';
+// eslint-disable-next-line import/named
+import HomeState from '../types/_homepage';
 import MyFile from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
@@ -104,7 +105,7 @@ const addSubmitFormEvent = (state: HomeState) => {
             // FIXME: get from cookie
             modifiedBy: 'Hieu Dang Thanh',
             folderId: state.currentFolderId,
-            file: file as File,
+            file: file as File
           };
 
           renderSpinner();

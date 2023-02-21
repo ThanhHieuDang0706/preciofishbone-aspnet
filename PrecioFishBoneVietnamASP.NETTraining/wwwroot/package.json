@@ -10,12 +10,14 @@
     "name": "PrecioFishbone"
   },
   "browserslist": [
-    "> 1%",
-    "IE 11"
+    "> 0.2%",
+    "not dead",
+    "not op_mini all"
   ],
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
     "@babel/plugin-transform-object-assign": "^7.7.4",
     "@babel/polyfill": "^7.7.0",
@@ -74,16 +76,21 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.33.0",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "axios": "^1.3.3",
     "bootstrap": "^4.5.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
+    "express": "^4.18.2",
     "feather-icons": "^4.28.0",
     "jquery": "^3.6.3",
     "keen-slider": "^5.0.5",
     "lit-html": "^1.2.1",
     "moment": "^2.29.4",
+    "morgan": "^1.10.0",
+    "msal": "^1.4.17",
     "popper.js": "^1.16.1",
-    "webpack-fix-style-only-entries": "^0.5.0"
+    "webpack-fix-style-only-entries": "^0.5.0",
+    "yargs": "^17.7.0"
   }
 }

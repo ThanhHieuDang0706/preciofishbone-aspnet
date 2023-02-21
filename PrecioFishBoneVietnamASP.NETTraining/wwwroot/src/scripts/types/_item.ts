@@ -1,6 +1,6 @@
 export enum ItemType {
   File = 0,
-  Folder = 1,
+  Folder = 1
 }
 export default interface Item {
   id: number;

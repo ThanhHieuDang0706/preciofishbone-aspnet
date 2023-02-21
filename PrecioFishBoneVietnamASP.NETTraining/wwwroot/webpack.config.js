@@ -7,23 +7,19 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 const NyanProgressPlugin = require('nyan-progress-webpack-plugin');
 
 const getEntries = function() {
-  return glob
-    .sync(
-      './src/{scripts/pages,styles/pages}/**/!(_)*.{scss,js,ts,tsx}',
-    )
-    .reduce((entries, entry) => {
-      const key = entry
-        .split('/')
-        .pop()
-        .replace(/.scss|.js|.ts|.tsx/gi, '');
-      let localEntries = { ...entries };
-      if (key in entries) {
-        localEntries[key].push(entry);
-      } else {
-        localEntries = Object.assign(entries, { [key]: [entry] });
-      }
-      return localEntries;
-    }, {});
+  return glob.sync('./src/{scripts/pages,scripts/auth,styles/pages}/**/!(_)*.{scss,js,ts,tsx}').reduce((entries, entry) => {
+    const key = entry
+      .split('/')
+      .pop()
+      .replace(/.scss|.js|.ts|.tsx/gi, '');
+    let localEntries = { ...entries };
+    if (key in entries) {
+      localEntries[key].push(entry);
+    } else {
+      localEntries = Object.assign(entries, { [key]: [entry] });
+    }
+    return localEntries;
+  }, {});
 };
 
 const commonConfig = {

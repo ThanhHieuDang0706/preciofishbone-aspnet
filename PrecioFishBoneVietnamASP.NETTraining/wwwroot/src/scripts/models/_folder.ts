@@ -32,7 +32,7 @@ export default class Folder implements IFolder {
     parentFolderId: number | null,
     modified: string,
     modifiedBy: string,
-    folders: Array<IFolder>,
+    folders: Array<IFolder>
   ) {
     this.id = id;
     this.name = name;
@@ -72,7 +72,7 @@ export class FolderHelper {
         folderData.parentFolderId,
         folderData.modified,
         folderData.modifiedBy,
-        folderData.folders,
+        folderData.folders
       );
       cb({ data: folderToReturn });
     } catch (error) {

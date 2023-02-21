@@ -22,7 +22,7 @@ export const fileExtensionToIconMapper: Record<string, string> = {
   mp3: '<i class="text-secondary fa fa-light fa-file-audio"></i>',
   png: '<i class="text-secondary fa fa-light fa-file-image"></i>',
   jpg: '<i class="text-secondary fa fa-light fa-file-image"></i>',
-  url: '<i class="text-secondary fa fa-light fa-link"></i>',
+  url: '<i class="text-secondary fa fa-light fa-link"></i>'
 };
 
 export const defaultFileIcon = '<i class="text-secondary fa fa-light fa-file"></i>';

@@ -11,8 +11,8 @@ class FileServices implements IFileServices {
 
     const response = await axios.post('/api/files/upload', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        'Content-Type': 'multipart/form-data'
+      }
     });
     return response.data;
   };

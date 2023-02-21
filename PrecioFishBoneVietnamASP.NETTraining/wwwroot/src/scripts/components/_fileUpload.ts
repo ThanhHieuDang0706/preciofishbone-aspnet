@@ -22,7 +22,7 @@ export const fileUploaderState: FileUploaderState = {
   },
   setFile: (file: any) => {
     fileUploaderState.file = file;
-  },
+  }
 };
 
 const renderFileUploadContent = (fileNameWithExtensions: string, fileReader: FileReader) => {

@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- msal.js -->
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js"
+            integrity="sha384-o4ufwq3oKqc7IoCcR08YtZXmgOljhTggRwxP2CLbSqeXGtitAxwYaUln/05nJjit"
+            crossorigin="anonymous"></script>
     <!-- Bootstrap -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -101,6 +105,11 @@
                 <i class="fa fa-ellipsis"></i>
               </a>
             </li>
+
+            <li class="nav-item text-right nav-item-spacing">
+              <!-- sign in button !-->
+              <button type="button" class="btn btn-primary" id="sign-in-button">Sign In</button>
+            </li>
           </ul>
         </div>
       </nav>
@@ -121,5 +130,14 @@
     <button type="button" class="position-absolute btn circle-button" id="back-button">
       <i class="fa fa-arrow-left"></i>
     </button>
+
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js"
+            integrity="sha384-o4ufwq3oKqc7IoCcR08YtZXmgOljhTggRwxP2CLbSqeXGtitAxwYaUln/05nJjit"
+            crossorigin="anonymous"></script>
+
+
+    <!-- <script type="text/javascript" src="./src/scripts/auth/authRedirect.js"></script>   -->
+    <!-- uncomment the above line and comment the line below if you would like to use the redirect flow -->
+
   </body>
 </html>

@@ -3,7 +3,7 @@ import { parseZone } from 'moment';
 import { FolderHelper } from '../models/_folder';
 import { folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
 import renderSpinner, { removeSpinner } from './_loading';
-import { HomeState } from '../types/_homepage';
+import HomeState from '../types/_homepage';
 import Item from '../types/_item';
 import IFile from '../types/_file';
 import Folder from '../types/_folder';
