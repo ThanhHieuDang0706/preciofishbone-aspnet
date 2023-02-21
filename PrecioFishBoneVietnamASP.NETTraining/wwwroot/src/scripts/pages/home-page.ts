@@ -6,9 +6,11 @@ import { ROOT_FOLDER_ID } from '../utilities/_folder';
 
 // @ts-ignore
 // js code
-import { addSignInButtonEventClick } from '../auth/_authRedirect';
+import { addSignInButtonEventClick, selectAccount } from '../auth/_authRedirect';
 
 ready(async () => {
+  addSignInButtonEventClick();
+  selectAccount();
   // state
   const state: HomeState = {
     currentFolderId: ROOT_FOLDER_ID,
@@ -17,7 +19,6 @@ ready(async () => {
     }
   };
 
-  addSignInButtonEventClick();
   // render intial view
   renderModalForm(state);
   await renderTable(state);
