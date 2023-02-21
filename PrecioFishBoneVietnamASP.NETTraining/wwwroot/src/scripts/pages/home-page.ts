@@ -3,14 +3,12 @@ import { renderTable } from '../components/_table';
 import renderModalForm from '../components/_modal';
 import HomeState from '../types/_homepage';
 import { ROOT_FOLDER_ID } from '../utilities/_folder';
-
-// @ts-ignore
-// js code
-import { addSignInButtonEventClick, selectAccount } from '../auth/_authRedirect';
+import { addSignInButtonEventClick, handleRedirectPromise, selectAccount } from '../auth/_authRedirect';
 
 ready(async () => {
-  addSignInButtonEventClick();
   selectAccount();
+  addSignInButtonEventClick();
+  handleRedirectPromise();
   // state
   const state: HomeState = {
     currentFolderId: ROOT_FOLDER_ID,

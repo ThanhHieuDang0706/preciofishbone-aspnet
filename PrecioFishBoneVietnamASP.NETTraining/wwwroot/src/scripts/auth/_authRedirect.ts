@@ -53,6 +53,31 @@ export function selectAccount() {
   }
 }
 
+/**
+ * A promise handler needs to be registered for handling the
+ * response returned from redirect flow. For more information, visit:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/acquire-token.md
+ */
+
+const handleResponse = (response: AuthenticationResult | null) => {
+  if (response !== null) {
+    const account = response.account as AccountInfo;
+    username = account.username || '';
+    showWelcomeMessage(username);
+  } else {
+    selectAccount();
+  }
+};
+
+export const handleRedirectPromise = () => {
+  myMSALObj
+    .handleRedirectPromise()
+    .then(handleResponse)
+    .catch(error => {
+      console.error(error);
+    });
+};
+
 export const addSignInButtonEventClick = () => {
   $('#sign-in-button').on('click', () => {
     myMSALObj
@@ -69,27 +94,6 @@ export const addSignInButtonEventClick = () => {
       });
   });
 };
-
-/**
- * A promise handler needs to be registered for handling the
- * response returned from redirect flow. For more information, visit:
- * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/acquire-token.md
- */
-
-const handleResponse = (response: AuthenticationResult | null) => {
-  if (response !== null) {
-    username = response?.account?.username || '';
-    showWelcomeMessage(username);
-  } else {
-    selectAccount();
-  }
-};
-myMSALObj
-  .handleRedirectPromise()
-  .then(handleResponse)
-  .catch(error => {
-    console.error(error);
-  });
 
 function signOut() {
   /**
