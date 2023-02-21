@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 using PrecioFishboneVietnamASP.NETTraining.Services;
 
@@ -13,16 +14,38 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
     {
         private readonly IItemRepository _itemRepository;
         private readonly IMapper _mapper;
-        public Files(IItemRepository itemRepository, IMapper mapper)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public Files(IItemRepository itemRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _itemRepository = itemRepository;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet]
-        public Task<IActionResult> GetFile(int fileId)
+        [HttpGet("{fileId}", Name = "GetFileById")]
+        public async Task<IActionResult> GetFileById(int fileId)
         {
-            throw new NotImplementedException();
+            var fileEntity = await _itemRepository.GetFile(fileId);
+            return Ok(_mapper.Map<FileDto>(fileEntity));
         }
+
+        [HttpPost("/upload")]
+        public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
+        {
+            var fileEntity = await _itemRepository.UploadFile(fileForm, folderId);
+
+            if (fileEntity == null)
+            {
+                return NotFound(new
+                {
+                    Message = "Folder not found"
+                });
+            }
+
+            var fileToReturn = _mapper.Map<FileDto>(fileEntity);
+
+            return CreatedAtRoute("GetFileById", new { fileId = fileToReturn.Id }, fileToReturn);
+        }
+
     }
 }

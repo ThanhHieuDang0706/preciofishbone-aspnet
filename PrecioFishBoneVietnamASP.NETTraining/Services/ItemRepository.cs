@@ -1,16 +1,66 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
+using PrecioFishboneVietnamASP.NETTraining.Migrations;
+using PrecioFishboneVietnamASP.NETTraining.Models;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Services
 {
     public class ItemRepository : IItemRepository
     {
         private readonly ItemContext _context;
-
-        public ItemRepository(ItemContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ItemRepository(ItemContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
+        {
+            var file = fileForm.File;
+            var folder = await _context.Folders.Where(f => f.Id == folderId).FirstOrDefaultAsync();
+            if (folder != null)
+            {
+                var addFileDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "public", "uploads");
+
+                if (!Directory.Exists(addFileDirectory))
+                {
+                    Directory.CreateDirectory(addFileDirectory);
+                }
+
+                var fileEntity = new MyFile
+                {
+                    Name = Path.GetFileNameWithoutExtension(file.FileName),
+                    Modified = DateTime.Now,
+                    ModifiedBy = fileForm.ModifiedBy,
+                    FileExtension = Path.GetExtension(file.FileName),
+                    FileUrl = Path.Combine(_webHostEnvironment.WebRootPath, "public", "uploads", file.FileName),
+                    CreatedTime = DateTime.Now,
+                    FolderId = folderId
+                };
+
+                folder.Files.Add(fileEntity);
+                await _context.SaveChangesAsync();
+
+                using (var fileStream = new FileStream(fileEntity.FileUrl, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                return fileEntity;
+            }
+
+            return null;
+        }
+
+        public async Task<MyFile?> GetFile(int fileId)
+        {
+            return await _context.Files
+                .Where(file => file.Id == fileId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Folder?> GetItemsInFolders(int folderId)
