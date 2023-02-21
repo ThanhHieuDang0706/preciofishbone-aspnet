@@ -3,6 +3,8 @@ import MyFile from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
 import { folderHelper, renderTable } from './_table';
+import newFolderForm from './_form';
+import { renderFileUploader } from './_fileUpload';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -23,21 +25,6 @@ const modal = () => `<!-- New File Modal -->
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="name"></label>
-            <input type="text" class="form-control" id="name" placeholder="Enter file name">
-          </div>
-          <div class="form-group modified">
-            <label for="modified">Modified</label>
-            <input type="datetime-local" class="form-control" id="modified" placeholder="Modified Date">
-          </div>
-          <div class="form-group">
-            <label for="modifiedBy">Modified By</label>
-            <input type="text" class="form-control" id="modifiedBy" placeholder="Who modified this?">
-          </div>
-
-        </form>
 
       </div>
       <div class="modal-footer">
@@ -48,21 +35,12 @@ const modal = () => `<!-- New File Modal -->
   </div>
 </div>`;
 
-// create new file button
-const addNewFileClickEvent = () => {
-  $('#newFileButton').on('click', () => {
-    clearInput();
-    $('label[for="name"]').text('File name');
-    $('#modal-title').text('Create new file');
-    const modalOkButton = $('#modal-ok-button');
-    modalOkButton.text('Create');
-    modalOkButton.attr('data-action', 'create');
-  });
-};
-
 // clicking new folder button
 const addNewFolderClickEvent = () => {
   $('#newFolderButton').on('click', () => {
+    const modalBody = $('.modal-body');
+    modalBody.empty();
+    modalBody.append(newFolderForm);
     clearInput();
     $('label[for="name"]').text('Folder name');
     $('#modal-title').text('Create new folder');
@@ -73,9 +51,18 @@ const addNewFolderClickEvent = () => {
   });
 };
 
+const uploadFileUploadClickEvent = () => {
+  $('#toolbar-upload-btn').on('click', () => {
+    $('#modal-form').modal('show');
+    renderFileUploader();
+    $('#modal-title').text('Upload new file');
+    const modalOkButton = $('#modal-ok-button');
+    modalOkButton.text('Upload');
+    modalOkButton.attr('data-action', 'upload');
+  });
+};
+
 const addSubmitFormEvent = (state: HomeState) => {
-  // clicking ok button
-  // when clicking ok button in modal form
   $('#modal-ok-button').on('click', () => {
     const action = $('#modal-ok-button').attr('data-action');
     if (action === 'create') {
@@ -108,8 +95,8 @@ const addSubmitFormEvent = (state: HomeState) => {
 
 const renderModalForm = (state: HomeState) => {
   $('#main-content').append(modal);
+  uploadFileUploadClickEvent();
   addNewFolderClickEvent();
-  addNewFileClickEvent();
   addSubmitFormEvent(state);
 };
 
