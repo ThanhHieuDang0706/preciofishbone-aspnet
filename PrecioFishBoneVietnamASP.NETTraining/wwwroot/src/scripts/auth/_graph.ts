@@ -1,4 +1,4 @@
-export function callMSGraph(endpoint, token, callback) {
+export function callMSGraph(endpoint: string, token: string, callback: any) {
   const headers = new Headers();
   const bearer = `Bearer ${token}`;
 
