@@ -32,7 +32,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 
         [HttpPost("upload")]
         [Authorize(Roles = "Admin")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:WriteFileScopes")]
         public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
         {
             var fileEntity = await _itemRepository.UploadFile(fileForm);

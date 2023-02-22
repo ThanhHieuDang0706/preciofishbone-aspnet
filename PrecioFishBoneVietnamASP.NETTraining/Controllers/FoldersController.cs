@@ -24,7 +24,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpGet("{folderId}", Name = "GetFolderById")]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:ReadFolderScopes")]
         [Authorize(Roles="Viewer,Admin")]
         public async Task<IActionResult> GetFolderById(int folderId = -1, bool getWithItems = false)
         {
@@ -56,6 +55,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> CreateFolder(FolderForCreationDto folder)
         {
             var parentFolder = await _itemRepository.GetFolder(folder.ParentFolderId);
