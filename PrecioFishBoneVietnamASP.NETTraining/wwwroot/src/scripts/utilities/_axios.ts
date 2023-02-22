@@ -1,6 +1,7 @@
-import { AccountInfo, AuthenticationResult } from '@azure/msal-browser';
-import axios, { AxiosBasicCredentials } from 'axios';
-import { getTokenRedirect, myMSALObj, handleResponse } from '../auth/_authRedirect';
+import { AuthenticationResult } from '@azure/msal-browser';
+import axios from 'axios';
+import { getTokenRedirect } from '../auth/_authRedirect';
+import { renderAlert } from '../components/_alert';
 
 const API_BASE_URL = 'https://localhost';
 const PORT = 7214;
@@ -23,15 +24,27 @@ const tokenAxios = axios.create({
   }
 });
 
-axiosInstance.interceptors.request.use(async config => {
-  const res = (await getTokenRedirect()) as AuthenticationResult;
+axiosInstance.interceptors.request.use(
+  async config => {
+    const res = (await getTokenRedirect()) as AuthenticationResult;
 
-  const token = res.accessToken;
+    const token = res.accessToken;
 
-  if (token) {
-    config.headers.set('Authorization', `Bearer ${token}`);
+    if (token) {
+      config.headers.set('Authorization', `Bearer ${token}`);
+    }
+    return config;
+  },
+  error => {
+    renderAlert(error.message);
   }
-  return config;
-});
+);
+
+axiosInstance.interceptors.response.use(
+  response => response,
+  error => {
+    renderAlert(error.message);
+  }
+);
 
 export default axiosInstance;

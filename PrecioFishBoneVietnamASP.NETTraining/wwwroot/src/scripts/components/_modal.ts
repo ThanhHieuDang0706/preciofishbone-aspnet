@@ -9,6 +9,7 @@ import renderFileUploader, { fileUploaderState } from './_fileUpload';
 import FileForCreation from '../types/_fileForCreation';
 import { FileHelper } from '../models/_file';
 import renderSpinner, { removeSpinner } from './_loading';
+import { getUserInfo } from '../auth/_authRedirect';
 
 const fileHelper = new FileHelper();
 const modal = () => `<!-- New File Modal -->
@@ -82,7 +83,8 @@ const addSubmitFormEvent = (state: HomeState) => {
         const parentFolderId = state.currentFolderId;
 
         // TODO: Change here later => get sub(id) from cookie or somewhere
-        const modifiedBy = $('#modifiedBy').val() as string;
+        const userInfo = getUserInfo();
+        const modifiedBy = userInfo.name || '';
 
         folderHelper.createFolder(name, parentFolderId, modifiedBy, data => {
           if (data.error) {

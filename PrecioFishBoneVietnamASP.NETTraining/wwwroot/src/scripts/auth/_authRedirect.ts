@@ -1,10 +1,10 @@
 // Create the main myMSALObj instance
-import msal, { PublicClientApplication, AuthenticationResult, AccountInfo, SilentRequest } from '@azure/msal-browser';
+import { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
 import $ from 'jquery';
 import { loginRequest, msalConfig, tokenRequest } from './_authConfig';
-import { showWelcomeMessage, updateUI } from './_ui';
-import axios from '../utilities/_axios';
+import { updateUI } from './_ui';
 import { renderTable } from '../components/_table';
+import { renderAlert } from '../components/_alert';
 
 export const myMSALObj = new PublicClientApplication(msalConfig);
 const accountId = 0;
@@ -45,7 +45,6 @@ export function selectAccount() {
 
 export const handleResponse = (response: AuthenticationResult | null) => {
   if (response !== null) {
-    // attach token to axios
     const account = response.account as AccountInfo;
     username = account.username || '';
     updateUI(account.name || '');
@@ -59,8 +58,8 @@ export const handleRedirectPromise = () => {
   myMSALObj
     .handleRedirectPromise()
     .then(handleResponse)
-    .catch(error => {
-      console.error(error);
+    .catch((error: any) => {
+      renderAlert(error.message as string);
     });
 };
 
@@ -70,7 +69,7 @@ export const addSignInButtonEventClick = () => {
   });
 };
 
-function signOut() {
+export function signOut() {
   /**
    * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
@@ -97,4 +96,9 @@ export function getTokenRedirect(request: any = tokenRequest): Promise<Authentic
       handleResponse(response);
     });
   });
+}
+
+// user info helper
+export function getUserInfo() {
+  return myMSALObj.getAccountByUsername(username) as AccountInfo;
 }
