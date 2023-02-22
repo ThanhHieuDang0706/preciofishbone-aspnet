@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 using PrecioFishboneVietnamASP.NETTraining.Services;
@@ -10,6 +12,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 {
     [Route("api/files")]
     [ApiController]
+    [Authorize]
     public class Files : ControllerBase
     {
         private readonly IItemRepository _itemRepository;
@@ -28,6 +31,8 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpPost("upload")]
+        [Authorize(Roles = "Admin")]
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:WriteFileScopes")]
         public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
         {
             var fileEntity = await _itemRepository.UploadFile(fileForm);

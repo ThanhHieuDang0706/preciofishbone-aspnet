@@ -25,6 +25,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 
         [HttpGet("{folderId}", Name = "GetFolderById")]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:ReadFolderScopes")]
+        [Authorize(Roles="Viewer,Admin")]
         public async Task<IActionResult> GetFolderById(int folderId = -1, bool getWithItems = false)
         {
             try
