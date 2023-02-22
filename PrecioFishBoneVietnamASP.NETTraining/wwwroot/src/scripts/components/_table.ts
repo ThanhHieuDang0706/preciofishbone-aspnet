@@ -8,6 +8,7 @@ import Item from '../types/_item';
 import IFile from '../types/_file';
 import Folder from '../types/_folder';
 import { ROOT_FOLDER_ID } from '../utilities/_folder';
+import { homeState } from '../pages/home-page';
 
 const tableHeader = `<thead>
 <tr>
@@ -103,7 +104,7 @@ const renderTableCell = (item: Item) => `
 
 export const folderHelper = new FolderHelper();
 
-export const renderTable = async (state: HomeState) => {
+export const renderTable = async (state: HomeState = homeState) => {
   if (state.currentFolderId === ROOT_FOLDER_ID) {
     $('#back-button').hide();
   } else {

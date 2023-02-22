@@ -1,6 +1,7 @@
 import IFolderServices from './_IFolderServices';
 import axios from '../utilities/_axios';
 import FolderForCreation from '../types/_folderForCreation';
+import { getTokenRedirect } from '../auth/_authRedirect';
 
 class FolderServices implements IFolderServices {
   getFolderInfoById = async (folderId = -1) => {

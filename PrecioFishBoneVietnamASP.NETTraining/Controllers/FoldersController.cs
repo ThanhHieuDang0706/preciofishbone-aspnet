@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 using PrecioFishboneVietnamASP.NETTraining.Services;
@@ -8,6 +11,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 {
     [Route("api/folders")]
     [ApiController]
+    [Authorize]
     public class FoldersController : ControllerBase
     {
         private readonly IItemRepository _itemRepository;
@@ -20,6 +24,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpGet("{folderId}", Name = "GetFolderById")]
+        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:ReadFolderScopes")]
         public async Task<IActionResult> GetFolderById(int folderId = -1, bool getWithItems = false)
         {
             try

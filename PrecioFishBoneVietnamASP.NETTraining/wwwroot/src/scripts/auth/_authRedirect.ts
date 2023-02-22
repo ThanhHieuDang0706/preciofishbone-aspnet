@@ -1,16 +1,18 @@
 // Create the main myMSALObj instance
-import msal, { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
+import msal, { PublicClientApplication, AuthenticationResult, AccountInfo, SilentRequest } from '@azure/msal-browser';
 import $ from 'jquery';
-import { loginRequest, msalConfig } from './_authConfig';
+import { loginRequest, msalConfig, tokenRequest } from './_authConfig';
 import { showWelcomeMessage, updateUI } from './_ui';
+import axios from '../utilities/_axios';
+import { renderTable } from '../components/_table';
 
 export const myMSALObj = new PublicClientApplication(msalConfig);
-let accountId = 0;
+const accountId = 0;
 
 // get username from session storage azure id
 let username = '';
 
-function signIn() {
+export function signIn() {
   /**
    * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
@@ -19,37 +21,19 @@ function signIn() {
   myMSALObj.loginRedirect(loginRequest);
 }
 
-const handleRedirectLogin = () => {
-  myMSALObj
-    .loginRedirect(loginRequest)
-    .then((loginResponse: any) => {
-      accountId = loginResponse.account.homeAccountId;
-      console.log(accountId);
-      // Display signed-in user content, call API, etc.
-    })
-    .catch(function(error) {
-      // login failure
-      console.log(error);
-    });
-};
-
 export function selectAccount() {
   /**
    * See here for more info on account retrieval:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
    */
-
   const currentAccounts = myMSALObj.getAllAccounts();
-
   if (currentAccounts.length === 0) {
-    handleRedirectLogin();
   }
   if (currentAccounts.length > 1) {
     // Add your account choosing logic here
-    console.warn('Multiple accounts detected.');
   } else if (currentAccounts.length === 1) {
     username = currentAccounts[0].username;
-    showWelcomeMessage(currentAccounts[0].username);
+    updateUI(currentAccounts[0].name || '');
   }
 }
 
@@ -59,11 +43,13 @@ export function selectAccount() {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/acquire-token.md
  */
 
-const handleResponse = (response: AuthenticationResult | null) => {
+export const handleResponse = (response: AuthenticationResult | null) => {
   if (response !== null) {
+    // attach token to axios
     const account = response.account as AccountInfo;
     username = account.username || '';
-    updateUI(account);
+    updateUI(account.name || '');
+    renderTable();
   } else {
     selectAccount();
   }
@@ -98,7 +84,7 @@ function signOut() {
   myMSALObj.logoutRedirect(logoutRequest);
 }
 
-function getTokenRedirect(request: any) {
+export function getTokenRedirect(request: any = tokenRequest): Promise<AuthenticationResult | void> {
   /**
    * See here for more info on account retrieval:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
@@ -106,11 +92,9 @@ function getTokenRedirect(request: any) {
   request.account = myMSALObj.getAccountByUsername(username) as AccountInfo;
 
   return myMSALObj.acquireTokenSilent(request).catch(error => {
-    console.warn('silent token acquisition fails. acquiring token using redirect');
-    if (error instanceof msal.InteractionRequiredAuthError) {
-      // fallback to interaction when silent call fails
-      return myMSALObj.acquireTokenRedirect(request);
-    }
-    console.warn(error);
+    // fallback to interaction when silent call fails
+    return myMSALObj.acquireTokenRedirect(request).then((response: any) => {
+      handleResponse(response);
+    });
   });
 }
