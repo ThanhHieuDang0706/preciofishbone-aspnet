@@ -98,6 +98,15 @@ const renderTableCell = (item: Item) => `
         <button data-action="delete" data-id="${item.id}" data-type="${isFile(item) ? 'file' : 'folder'}" type="button" class="btn btn-sm btn-danger">
           <i class="fa fa-trash"></i>
         </button>
+        ${
+          isFile(item)
+            ? `
+            <button class="btn btn-sm btn-success" data-action="download" data-id="${item.id} data-type="${isFile(item) ? 'file' : 'folder'}">
+              <i class="fa fa-download"></i>
+            </button>
+            `
+            : ''
+        }
       </div>
     </div>
   </td>
@@ -177,11 +186,18 @@ export const renderTable = async (state: HomeState = homeState) => {
     const type = $(element).data('type');
 
     $(element).on('click', () => {
-      state.setEditingFolderId(id);
       addFolderFormBody();
       const modalOkButton = $('#modal-ok-button');
       if (type === 'file') {
+        state.setEditingFileId(id);
+        const editingFile = fileMapper[id];
+        $("label[for='name']").text('File name');
+        $('#modal-title').text('Edit file');
+        $('#name').val(`${editingFile.name}${editingFile.fileExtension}`);
+        modalOkButton.text('Save');
+        modalOkButton.attr('data-action', 'edit');
       } else if (type === 'folder') {
+        state.setEditingFolderId(id);
         $("label[for='name']").text('Folder name');
         $('#modal-title').text('Edit folder');
         $('#name').val(folderMapper[id].name);
@@ -218,6 +234,28 @@ export const renderTable = async (state: HomeState = homeState) => {
             renderTable(state);
           }
         });
+      }
+    });
+  });
+
+  $('button[data-action="download"]').each((_, element) => {
+    const id = parseInt($(element).data('id'), 10);
+    const type = $(element).data('type');
+
+    $(element).on('click', () => {
+      if (type === 'file') {
+        // fileHelper.downloadFile(id, res => {
+        //   if (res.error) {
+        //     // process errors here
+        //   } else {
+        //     const link = document.createElement('a');
+        //     link.href = res.data;
+        //     link.download = fileMapper[id].name;
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        //   }
+        // });
       }
     });
   });

@@ -1,4 +1,4 @@
-import IFile from '../types/_file';
+import IFile, { FileUpdate } from '../types/_file';
 import { ItemType } from '../types/_item';
 import FileForCreation from '../types/_fileForCreation';
 import IFileServices from '../services/_IFileServices';
@@ -46,6 +46,15 @@ export class FileHelper {
     try {
       await this.fileService.deleteFile(fileId);
       cb({ data: fileId });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
+
+  updateFile = async (fileUpdate: FileUpdate, cb: (data: Record<string, IFile | any>) => void) => {
+    try {
+      const fileData = await this.fileService.updateFile(fileUpdate);
+      cb({ data: fileData });
     } catch (error) {
       return cb({ error });
     }

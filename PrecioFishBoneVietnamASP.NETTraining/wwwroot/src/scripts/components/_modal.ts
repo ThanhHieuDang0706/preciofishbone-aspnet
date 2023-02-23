@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/named
 import HomeState from '../types/_homepage';
-import MyFile from '../types/_file';
+import MyFile, { FileUpdate } from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
 import { renderTable } from './_table';
@@ -11,7 +11,7 @@ import FileForCreation from '../types/_fileForCreation';
 import renderSpinner, { removeSpinner } from './_loading';
 import { getUserInfo, myMSALObj } from '../auth/_authRedirect';
 import { folderHelper } from '../utilities/_folder';
-import { fileHelper } from '../utilities/_file';
+import { fileHelper, parseFileExtension } from '../utilities/_file';
 import { homeState } from '../utilities/_state';
 import FolderForUpdate from '../types/_folderForUpdate';
 
@@ -83,6 +83,7 @@ const addSubmitFormEvent = (state: HomeState) => {
       .includes('folder')
       ? 'folder'
       : 'file';
+    const userInfo = getUserInfo();
 
     if (action === 'create') {
       if (type === 'folder') {
@@ -90,7 +91,6 @@ const addSubmitFormEvent = (state: HomeState) => {
         const parentFolderId = state.currentFolderId;
 
         // TODO: Change here later => get sub(id) from cookie or somewhere
-        const userInfo = getUserInfo();
         const modifiedBy = userInfo.name || '';
 
         folderHelper.createFolder(name, parentFolderId, modifiedBy, data => {
@@ -108,8 +108,7 @@ const addSubmitFormEvent = (state: HomeState) => {
       if (type === 'file') {
         const { file } = fileUploaderState;
         if (file) {
-          const account = getUserInfo();
-          const modifiedBy = account.name || '';
+          const modifiedBy = userInfo.name || '';
           const fileForCreation: FileForCreation = {
             createdTime: new Date().toISOString(),
             modified: new Date().toISOString(),
@@ -136,7 +135,6 @@ const addSubmitFormEvent = (state: HomeState) => {
 
     if (action === 'edit') {
       if (type === 'folder') {
-        const userInfo = getUserInfo();
         const folderUpdate: FolderForUpdate = {
           id: <number>homeState.editingFolderId,
           name: $('#name').val() as string,
@@ -150,6 +148,30 @@ const addSubmitFormEvent = (state: HomeState) => {
             // process error when updating
           } else {
             state.setEditingFolderId(null);
+            $('#modal-form').modal('hide');
+            clearInput();
+            renderTable(state);
+          }
+        });
+      }
+
+      if (type === 'file') {
+        const nameWithExtension = $('#name').val() as string;
+        const fileExtension = `.${parseFileExtension(nameWithExtension)}`;
+        const nameWithoutExtension = nameWithExtension.replace(fileExtension, '');
+        const fileUpdate: FileUpdate = {
+          id: <number>homeState.editingFileId,
+          name: nameWithoutExtension,
+          fileExtension,
+          modifiedBy: userInfo.name || ''
+        };
+        renderSpinner();
+        fileHelper.updateFile(fileUpdate, data => {
+          removeSpinner();
+          if (data.error) {
+            // process error when updating
+          } else {
+            state.setEditingFileId(null);
             $('#modal-form').modal('hide');
             clearInput();
             renderTable(state);

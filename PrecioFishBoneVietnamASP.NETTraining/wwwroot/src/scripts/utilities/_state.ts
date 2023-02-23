@@ -5,6 +5,7 @@ export const homeState: HomeState = {
   currentFolderId: ROOT_FOLDER_ID,
   parentFolderId: null,
   editingFolderId: null,
+  editingFileId: null,
   setCurrentFolderId: (id: number) => {
     homeState.currentFolderId = id;
   },
@@ -13,5 +14,8 @@ export const homeState: HomeState = {
   },
   setEditingFolderId: (id: number | null) => {
     homeState.editingFolderId = id;
+  },
+  setEditingFileId: (id: number | null) => {
+    homeState.editingFileId = id;
   }
 };

@@ -1,6 +1,7 @@
 import IFileServices from './_IFileServices';
 import FileForCreation from '../types/_fileForCreation';
 import axios from '../utilities/_axios';
+import { FileUpdate } from '../types/_file';
 
 class FileServices implements IFileServices {
   uploadFile = async (fileForCreation: FileForCreation) => {
@@ -19,6 +20,11 @@ class FileServices implements IFileServices {
 
   deleteFile = async (fileId: number) => {
     const response = await axios.delete(`/api/files/${fileId}`);
+    return response.data;
+  };
+
+  updateFile = async (fileUpdate: FileUpdate) => {
+    const response = await axios.put(`/api/files`, fileUpdate);
     return response.data;
   };
 }
