@@ -7,8 +7,8 @@ import HomeState from '../types/_homepage';
 import Item from '../types/_item';
 import IFile from '../types/_file';
 import Folder from '../types/_folder';
-import { ROOT_FOLDER_ID } from '../utilities/_folder';
-import { homeState } from '../pages/home-page';
+import { folderHelper, ROOT_FOLDER_ID } from '../utilities/_folder';
+import { homeState } from '../utilities/_state';
 
 const tableHeader = `<thead>
 <tr>
@@ -102,8 +102,6 @@ const renderTableCell = (item: Item) => `
 </tr>
 `;
 
-export const folderHelper = new FolderHelper();
-
 export const renderTable = async (state: HomeState = homeState) => {
   if (state.currentFolderId === ROOT_FOLDER_ID) {
     $('#back-button').hide();
@@ -123,6 +121,8 @@ export const renderTable = async (state: HomeState = homeState) => {
     } else {
       folder = <Folder>res.data;
       items = folder.items;
+      state.setCurrentFolderId(folder.id);
+      state.setParentFolderId(folder.parentFolderId);
     }
   });
 

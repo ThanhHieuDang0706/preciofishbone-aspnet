@@ -1,3 +1,4 @@
+import { FileHelper } from '../models/_file';
 import Item, { ItemType } from '../types/_item';
 
 export const isValidFileName = (fileName: string): boolean => {
@@ -42,3 +43,5 @@ export const parseFileExtension = (fileName: string) => {
 export const isFile = (item: Item) => {
   return item && item.itemType === ItemType.File;
 };
+
+export const fileHelper = new FileHelper();

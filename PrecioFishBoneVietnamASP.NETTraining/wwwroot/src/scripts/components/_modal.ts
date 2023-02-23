@@ -3,15 +3,16 @@ import HomeState from '../types/_homepage';
 import MyFile from '../types/_file';
 import Item, { ItemType } from '../types/_item';
 import { clearInput } from '../utilities/_helper';
-import { folderHelper, renderTable } from './_table';
+import { renderTable } from './_table';
 import newFolderForm from './_form';
 import renderFileUploader, { fileUploaderState } from './_fileUpload';
 import FileForCreation from '../types/_fileForCreation';
-import { FileHelper } from '../models/_file';
-import renderSpinner, { removeSpinner } from './_loading';
-import { getUserInfo } from '../auth/_authRedirect';
 
-const fileHelper = new FileHelper();
+import renderSpinner, { removeSpinner } from './_loading';
+import { getUserInfo, myMSALObj } from '../auth/_authRedirect';
+import { folderHelper } from '../utilities/_folder';
+import { fileHelper } from '../utilities/_file';
+
 const modal = () => `<!-- New File Modal -->
 <div 
   data-keyboard="false" data-backdrop="static"
@@ -101,11 +102,13 @@ const addSubmitFormEvent = (state: HomeState) => {
       if (type === 'file') {
         const { file } = fileUploaderState;
         if (file) {
+          const account = getUserInfo();
+          const modifiedBy = account.name || '';
           const fileForCreation: FileForCreation = {
             createdTime: new Date().toISOString(),
             modified: new Date().toISOString(),
             // FIXME: get from cookie
-            modifiedBy: 'Hieu Dang Thanh',
+            modifiedBy,
             folderId: state.currentFolderId,
             file: file as File
           };

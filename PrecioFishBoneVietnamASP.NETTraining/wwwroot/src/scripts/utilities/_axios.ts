@@ -16,18 +16,9 @@ const axiosInstance = axios.create({
   }
 });
 
-const tokenAxios = axios.create({
-  baseURL: 'https://login.microsoftonline.com/ccb176fe-8010-4cf0-a10c-0a3c789a1cef',
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-});
-
 axiosInstance.interceptors.request.use(
   async config => {
     const res = (await getTokenRedirect()) as AuthenticationResult;
-
     const token = res.accessToken;
 
     if (token) {
