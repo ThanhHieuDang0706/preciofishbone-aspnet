@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
@@ -11,10 +12,12 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
     {
         private readonly ItemContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ItemRepository(ItemContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly IMapper _mapper;
+        public ItemRepository(ItemContext context, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         public async Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm)
@@ -73,6 +76,15 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             }
         }
 
+        public async Task UpdateFile(FileForUpdateDto file)
+        {
+            var fileEntity = await _context.Files.Where(f => f.Id == file.Id).FirstOrDefaultAsync();
+            if (fileEntity != null)
+            {
+                _mapper.Map(file, fileEntity);
+            }
+        }
+
         public async Task<Folder?> GetItemsInFolders(int folderId)
         {
             return await _context.Folders
@@ -115,9 +127,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             var folder = await _context.Folders.Where(f => f.Id == folderUpdate.Id).FirstOrDefaultAsync();
             if (folder != null)
             {
-                folder.Name = folderUpdate.Name;
-                folder.Modified = DateTime.Now;
-                folder.ModifiedBy = folderUpdate.ModifiedBy;
+                _mapper.Map(folderUpdate, folder);
             }
         }
 

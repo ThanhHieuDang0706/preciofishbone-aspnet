@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Identity.Web.Resource;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
@@ -30,6 +31,23 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             return Ok(_mapper.Map<FileDto>(fileEntity));
         }
 
+        [HttpGet("download/{fileId}")]
+        [Authorize(Policy = "Member")]
+        public async Task<IActionResult> DownloadFile(int fileId)
+        {
+            var fileEntity = await _itemRepository.GetFile(fileId);
+            if (fileEntity == null)
+            {
+                return NotFound(new
+                {
+                    Message = "This file may have been removed!"
+                });
+            }
+
+            throw new NotImplementedException();
+        }
+
+
         [HttpPost("upload")]
         [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm)
@@ -49,6 +67,23 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             return CreatedAtRoute("GetFileById", new { fileId = fileToReturn.Id }, fileToReturn);
         }
 
+        [HttpPut]
+        [Authorize(Policy = "RequireAdmin")]
+        public async Task<IActionResult> UpdateFile(FileForUpdateDto file)
+        {
+            var fileEntity = await _itemRepository.GetFile(file.Id);
+            if (fileEntity == null)
+            {
+                return NotFound(new
+                {
+                    Message = "This file may have been removed!"
+                });
+            }
+            await _itemRepository.UpdateFile(file);
+            await _itemRepository.SaveAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{fileId}")]
         [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteFile(int fileId)
@@ -59,7 +94,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             {
                 return NotFound(new
                 {
-                    Message = "The file you try to delete may have been removed!"
+                    Message = "The file you try to delete may have already been removed!"
                 });
             }
 

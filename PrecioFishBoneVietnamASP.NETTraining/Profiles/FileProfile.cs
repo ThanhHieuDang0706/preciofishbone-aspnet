@@ -9,6 +9,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Profiles
         public FileProfile ()
         {
             CreateMap<MyFile, FileDto>();
+            CreateMap<FileForUpdateDto, MyFile>();
         }
     }
 }
