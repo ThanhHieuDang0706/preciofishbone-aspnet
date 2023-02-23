@@ -64,6 +64,15 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
                 .FirstOrDefaultAsync();
         }
 
+        public async Task DeleteFile(int fileId)
+        {
+            var file = await _context.Files.Where(f => f.Id == fileId).FirstOrDefaultAsync();
+            if (file != null)
+            {
+                _context.Files.Remove(file);
+            }
+        }
+
         public async Task<Folder?> GetItemsInFolders(int folderId)
         {
             return await _context.Folders
@@ -89,6 +98,15 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             if (parentFolder != null)
             {
                 parentFolder.Folders.Add(folder);
+            }
+        }
+
+        public async Task DeleteFolder(int folderId)
+        {
+            var folder = await _context.Folders.Where(f => f.Id == folderId).FirstOrDefaultAsync();
+            if (folder != null)
+            {
+                _context.Folders.Remove(folder);
             }
         }
 

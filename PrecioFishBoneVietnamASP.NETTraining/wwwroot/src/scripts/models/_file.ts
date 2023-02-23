@@ -41,4 +41,13 @@ export class FileHelper {
       return cb({ error });
     }
   };
+
+  deleteFile = async (fileId: number, cb: (data: Record<string, any>) => void) => {
+    try {
+      await this.fileService.deleteFile(fileId);
+      cb({ data: fileId });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
 }

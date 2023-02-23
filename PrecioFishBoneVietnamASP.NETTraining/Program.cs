@@ -27,6 +27,15 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdmin",
+        policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Member", policy =>
+        policy.RequireRole("Admin", "Viewer"));
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

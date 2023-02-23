@@ -12,9 +12,14 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
         Task<MyFile?> UploadFile([FromForm]FileForCreationDto fileForm);
         Task<MyFile> GetFile (int fileId);
 
+        Task DeleteFile(int fileId);
+
         // Folders
         Task<Folder?> GetFolder(int folderId);
         Task AddFolder(Folder folder, int parentFolderId);
+
+        Task DeleteFolder(int folderId);
+
         Task<bool> SaveAsync();
     }
 }

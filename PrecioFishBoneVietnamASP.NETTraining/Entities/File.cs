@@ -16,7 +16,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Entities
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
 
-        public DateTime Modified { get; set; }
+        public DateTime Modified { get; set; } = DateTime.Now;
 
         public string ModifiedBy { get; set; } = String.Empty;
         public Type ItemType { get; set; } = Type.File;

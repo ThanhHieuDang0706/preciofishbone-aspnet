@@ -31,7 +31,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpPost("upload")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
         {
             var fileEntity = await _itemRepository.UploadFile(fileForm);
@@ -47,6 +47,30 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             var fileToReturn = _mapper.Map<FileDto>(fileEntity);
 
             return CreatedAtRoute("GetFileById", new { fileId = fileToReturn.Id }, fileToReturn);
+        }
+
+        [HttpDelete("{fileId}")]
+        [Authorize(Policy = "RequireAdmin")]
+        public async Task<IActionResult> DeleteFile(int fileId)
+        {
+            var fileEntity = await _itemRepository.GetFile(fileId);
+
+            if (fileEntity == null)
+            {
+                return NotFound(new
+                {
+                    Message = "The file you try to delete may have been removed!"
+                });
+            }
+
+            await _itemRepository.DeleteFile(fileId);
+
+            if (!await _itemRepository.SaveAsync())
+            {
+                throw new Exception("Deleting file failed on save.");
+            }
+
+            return NoContent();
         }
 
     }

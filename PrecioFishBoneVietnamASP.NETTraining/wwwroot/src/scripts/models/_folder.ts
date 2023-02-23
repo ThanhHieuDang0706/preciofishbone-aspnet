@@ -88,4 +88,13 @@ export class FolderHelper {
       return cb({ error });
     }
   };
+
+  deleteFolder = async (folderId: number, cb: (data: any) => void) => {
+    try {
+      await this.folderService.deleteFolder(folderId);
+      cb({ data: { message: 'Delete successfully.' } });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
 }

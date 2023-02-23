@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { parseZone } from 'moment';
 import { FolderHelper } from '../models/_folder';
-import { folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
+import { fileHelper, folderIcon, isFile, mapFileExtensionToIcon } from '../utilities/_file';
 import renderSpinner, { removeSpinner } from './_loading';
 import HomeState from '../types/_homepage';
 import Item from '../types/_item';
@@ -194,20 +194,43 @@ export const renderTable = async (state: HomeState = homeState) => {
   // });
 
   // add event listeners when clicking delete button
-  // $('button[data-action="delete"]').each((_, element) => {
-  //   const id = parseInt($(element).data('id'), 10);
-  //   const type = $(element).data('type');
-  //   $(element).on('click', () => {
-  //     if (type === 'file') {
-  // MyFile.deleteFile(id, state.currentFolderId);
-  // return renderTable(state);
-  //     }
-  //     if (type === 'folder') {
-  // Folder.deleteFolder(id);
-  // return renderTable(state);
-  //     }
-  //   });
-  // });
+  $('button[data-action="delete"]').each((_, element) => {
+    const id = parseInt($(element).data('id'), 10);
+    const type = $(element).data('type');
+
+    $(element).on('click', () => {
+      renderSpinner();
+      if (type === 'folder') {
+        folderHelper.deleteFolder(id, res => {
+          removeSpinner();
+          if (res.error) {
+            // process errors here
+          } else {
+            renderTable(state);
+          }
+        });
+      }
+
+      if (type === 'file') {
+        fileHelper.deleteFile(id, res => {
+          removeSpinner();
+          if (res.error) {
+            // process errors here
+          } else {
+            renderTable(state);
+          }
+        });
+      }
+      // if (type === 'file') {
+      //   MyFile.deleteFile(id, state.currentFolderId);
+      //   return renderTable(state);
+      // }
+      // if (type === 'folder') {
+      //   Folder.deleteFolder(id);
+      //   return renderTable(state);
+      // }
+    });
+  });
 };
 
 export default renderTable;

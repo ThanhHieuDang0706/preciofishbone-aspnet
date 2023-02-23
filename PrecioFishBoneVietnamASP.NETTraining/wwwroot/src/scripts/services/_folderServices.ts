@@ -1,7 +1,6 @@
 import IFolderServices from './_IFolderServices';
 import axios from '../utilities/_axios';
 import FolderForCreation from '../types/_folderForCreation';
-import { getTokenRedirect } from '../auth/_authRedirect';
 
 class FolderServices implements IFolderServices {
   getFolderInfoById = async (folderId = -1) => {
@@ -16,6 +15,11 @@ class FolderServices implements IFolderServices {
 
   createFolder = async (folder: FolderForCreation) => {
     const response = await axios.post('/api/folders', folder);
+    return response.data;
+  };
+
+  deleteFolder = async (folderId: number) => {
+    const response = await axios.delete(`/api/folders/${folderId}`);
     return response.data;
   };
 }

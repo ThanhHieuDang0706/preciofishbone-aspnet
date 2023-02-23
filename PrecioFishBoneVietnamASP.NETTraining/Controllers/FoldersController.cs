@@ -24,7 +24,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpGet("{folderId}", Name = "GetFolderById")]
-        [Authorize(Roles="Viewer,Admin")]
+        [Authorize(Policy = "Member")]
         public async Task<IActionResult> GetFolderById(int folderId = -1, bool getWithItems = false)
         {
             try
@@ -55,7 +55,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles="Admin")]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> CreateFolder(FolderForCreationDto folder)
         {
             var parentFolder = await _itemRepository.GetFolder(folder.ParentFolderId);
@@ -73,6 +73,27 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             var folderToReturn = _mapper.Map<FolderDto>(folderEntity);
 
             return CreatedAtRoute("GetFolderById", new { folderId = folderToReturn.Id }, folderToReturn);
+        }
+
+        [HttpDelete("{folderId}")]
+
+        [Authorize(Policy = "RequireAdmin")]
+        public async Task<IActionResult> DeleteFolder(int folderId)
+        {
+            var folder = await _itemRepository.GetFolder(folderId);
+            if (folder == null)
+            {
+                return NotFound(new
+                {
+                    Message = "The folder you try to delete may have been removed!"
+                });
+            }
+
+            await _itemRepository.DeleteFolder(folderId);
+
+            await _itemRepository.SaveAsync();
+
+            return NoContent();
         }
 
     }

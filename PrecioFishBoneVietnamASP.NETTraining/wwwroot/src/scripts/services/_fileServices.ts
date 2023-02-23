@@ -16,6 +16,11 @@ class FileServices implements IFileServices {
     });
     return response.data;
   };
+
+  deleteFile = async (fileId: number) => {
+    const response = await axios.delete(`/api/files/${fileId}`);
+    return response.data;
+  };
 }
 
 export default FileServices;
