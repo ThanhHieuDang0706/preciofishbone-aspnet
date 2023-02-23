@@ -11,6 +11,7 @@ import { folderHelper, ROOT_FOLDER_ID } from '../utilities/_folder';
 import { homeState } from '../utilities/_state';
 import { addFolderFormBody } from './_modal';
 import { mapItems } from '../utilities/_helper';
+import { downloadFileWithId } from '../utilities/_linkDownload';
 
 const tableHeader = `<thead>
 <tr>
@@ -101,7 +102,7 @@ const renderTableCell = (item: Item) => `
         ${
           isFile(item)
             ? `
-            <button class="btn btn-sm btn-success" data-action="download" data-id="${item.id} data-type="${isFile(item) ? 'file' : 'folder'}">
+            <button class="btn btn-sm btn-success" data-action="download" data-id="${item.id}" data-type="${isFile(item) ? 'file' : 'folder'}">
               <i class="fa fa-download"></i>
             </button>
             `
@@ -244,18 +245,13 @@ export const renderTable = async (state: HomeState = homeState) => {
 
     $(element).on('click', () => {
       if (type === 'file') {
-        // fileHelper.downloadFile(id, res => {
-        //   if (res.error) {
-        //     // process errors here
-        //   } else {
-        //     const link = document.createElement('a');
-        //     link.href = res.data;
-        //     link.download = fileMapper[id].name;
-        //     document.body.appendChild(link);
-        //     link.click();
-        //     document.body.removeChild(link);
-        //   }
-        // });
+        fileHelper.downloadFile(id, res => {
+          if (res.error) {
+            // process errors here
+          } else {
+            downloadFileWithId(res, fileMapper, id);
+          }
+        });
       }
     });
   });

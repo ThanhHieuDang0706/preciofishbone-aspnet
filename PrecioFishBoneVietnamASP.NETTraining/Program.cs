@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
@@ -26,6 +27,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 builder.Services.AddAuthorization(options =>
 {

@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Runtime.CompilerServices;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.Identity.Web.Resource;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
@@ -18,10 +20,12 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
     {
         private readonly IItemRepository _itemRepository;
         private readonly IMapper _mapper;
-        public Files(IItemRepository itemRepository, IMapper mapper)
+        private readonly FileExtensionContentTypeProvider _fileExtensionContentTypeProvider;
+        public Files(IItemRepository itemRepository, IMapper mapper, FileExtensionContentTypeProvider fileExtensionContentTypeProvider)
         {
             _itemRepository = itemRepository;
             _mapper = mapper;
+            _fileExtensionContentTypeProvider = fileExtensionContentTypeProvider;
         }
 
         [HttpGet("{fileId}", Name = "GetFileById")]
@@ -31,7 +35,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             return Ok(_mapper.Map<FileDto>(fileEntity));
         }
 
-        [HttpGet("download/{fileId}")]
+        [HttpGet("{fileId}/download")]
         [Authorize(Policy = "Member")]
         public async Task<IActionResult> DownloadFile(int fileId)
         {
@@ -44,13 +48,19 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
                 });
             }
 
-            throw new NotImplementedException();
+            if (!_fileExtensionContentTypeProvider.TryGetContentType(fileEntity.FileUrl, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(fileEntity.FileUrl);
+            return File(bytes, contentType, $"{fileEntity.Name}{fileEntity.FileExtension}");
         }
 
 
         [HttpPost("upload")]
         [Authorize(Policy = "RequireAdmin")]
-        public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm)
+        public async Task<IActionResult> UploadFile([FromForm] FileForCreationDto fileForm)
         {
             var fileEntity = await _itemRepository.UploadFile(fileForm);
 

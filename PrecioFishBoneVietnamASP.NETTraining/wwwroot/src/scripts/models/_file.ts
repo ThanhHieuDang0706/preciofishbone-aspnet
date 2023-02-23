@@ -59,4 +59,13 @@ export class FileHelper {
       return cb({ error });
     }
   };
+
+  downloadFile = async (fileId: number, cb: (res: Record<string, any>) => void) => {
+    try {
+      const response: any = await this.fileService.downloadFile(fileId);
+      cb({ data: response.data, contentType: response.headers['content-type'] });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
 }
