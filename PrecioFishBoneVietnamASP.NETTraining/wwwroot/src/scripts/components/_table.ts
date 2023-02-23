@@ -9,6 +9,8 @@ import IFile from '../types/_file';
 import Folder from '../types/_folder';
 import { folderHelper, ROOT_FOLDER_ID } from '../utilities/_folder';
 import { homeState } from '../utilities/_state';
+import { addFolderFormBody } from './_modal';
+import { mapItems } from '../utilities/_helper';
 
 const tableHeader = `<thead>
 <tr>
@@ -125,6 +127,7 @@ export const renderTable = async (state: HomeState = homeState) => {
       state.setParentFolderId(folder.parentFolderId);
     }
   });
+  const { fileMapper, folderMapper } = mapItems(items);
 
   const table = $('table');
 
@@ -169,29 +172,24 @@ export const renderTable = async (state: HomeState = homeState) => {
   });
 
   // add event listeners when clicking edit button
-  // $('button[data-action="edit"]').each((_, element) => {
-  // const id = parseInt($(element).data('id'), 10);
-  // const type = $(element).data('type');
+  $('button[data-action="edit"]').each((_, element) => {
+    const id = parseInt($(element).data('id'), 10);
+    const type = $(element).data('type');
 
-  //   $(element).on('click', () => {
-  //     const modalOkButton = $('#modal-ok-button');
-  //     if (type === 'file') {
-  // $("label[for='name']").text('file name');
-  // $('#modal-title').text('Edit file');
-  // modalOkButton.text('Save');
-  // modalOkButton.attr('data-action', 'edit');
-  // const file = MyFile.getFileById(id);
-  // fillInput(file, id);
-  //     } else if (type === 'folder') {
-  // $("label[for='name']").text('folder name');
-  // $('#modal-title').text('Edit folder');
-  // modalOkButton.text('Save');
-  // modalOkButton.attr('data-action', 'edit');
-  // const currentFolder = Folder.loadSelectedFolder(id);
-  // fillInput(currentFolder, id);
-  //     }
-  //   });
-  // });
+    $(element).on('click', () => {
+      state.setEditingFolderId(id);
+      addFolderFormBody();
+      const modalOkButton = $('#modal-ok-button');
+      if (type === 'file') {
+      } else if (type === 'folder') {
+        $("label[for='name']").text('Folder name');
+        $('#modal-title').text('Edit folder');
+        $('#name').val(folderMapper[id].name);
+        modalOkButton.text('Save');
+        modalOkButton.attr('data-action', 'edit');
+      }
+    });
+  });
 
   // add event listeners when clicking delete button
   $('button[data-action="delete"]').each((_, element) => {
@@ -221,14 +219,6 @@ export const renderTable = async (state: HomeState = homeState) => {
           }
         });
       }
-      // if (type === 'file') {
-      //   MyFile.deleteFile(id, state.currentFolderId);
-      //   return renderTable(state);
-      // }
-      // if (type === 'folder') {
-      //   Folder.deleteFolder(id);
-      //   return renderTable(state);
-      // }
     });
   });
 };

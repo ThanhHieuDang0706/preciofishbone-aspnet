@@ -110,6 +110,17 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             }
         }
 
+        public async Task UpdateFolder(FolderForUpdateDto folderUpdate)
+        {
+            var folder = await _context.Folders.Where(f => f.Id == folderUpdate.Id).FirstOrDefaultAsync();
+            if (folder != null)
+            {
+                folder.Name = folderUpdate.Name;
+                folder.Modified = DateTime.Now;
+                folder.ModifiedBy = folderUpdate.ModifiedBy;
+            }
+        }
+
         public async Task<bool> SaveAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);

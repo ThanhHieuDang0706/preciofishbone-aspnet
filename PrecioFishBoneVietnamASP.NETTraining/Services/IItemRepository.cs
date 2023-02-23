@@ -17,7 +17,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
         // Folders
         Task<Folder?> GetFolder(int folderId);
         Task AddFolder(Folder folder, int parentFolderId);
-
+        Task UpdateFolder(FolderForUpdateDto folderUpdate);
         Task DeleteFolder(int folderId);
 
         Task<bool> SaveAsync();

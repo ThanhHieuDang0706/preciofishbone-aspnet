@@ -1,6 +1,7 @@
 import IFolderServices from './_IFolderServices';
 import axios from '../utilities/_axios';
 import FolderForCreation from '../types/_folderForCreation';
+import FolderForUpdate from '../types/_folderForUpdate';
 
 class FolderServices implements IFolderServices {
   getFolderInfoById = async (folderId = -1) => {
@@ -20,6 +21,11 @@ class FolderServices implements IFolderServices {
 
   deleteFolder = async (folderId: number) => {
     const response = await axios.delete(`/api/folders/${folderId}`);
+    return response.data;
+  };
+
+  updateFolder = async (folder: FolderForUpdate): Promise<void> => {
+    const response = await axios.put(`/api/folders`, folder);
     return response.data;
   };
 }

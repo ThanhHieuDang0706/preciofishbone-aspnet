@@ -12,6 +12,8 @@ import renderSpinner, { removeSpinner } from './_loading';
 import { getUserInfo, myMSALObj } from '../auth/_authRedirect';
 import { folderHelper } from '../utilities/_folder';
 import { fileHelper } from '../utilities/_file';
+import { homeState } from '../utilities/_state';
+import FolderForUpdate from '../types/_folderForUpdate';
 
 const modal = () => `<!-- New File Modal -->
 <div 
@@ -42,13 +44,17 @@ const modal = () => `<!-- New File Modal -->
   </div>
 </div>`;
 
+export const addFolderFormBody = () => {
+  const modalBody = $('.modal-body');
+  modalBody.empty();
+  modalBody.append(newFolderForm);
+};
+
 // clicking new folder button
 const addNewFolderClickEvent = () => {
   $('#newFolderButton').on('click', () => {
-    const modalBody = $('.modal-body');
-    modalBody.empty();
-    modalBody.append(newFolderForm);
     clearInput();
+    addFolderFormBody();
     $('label[for="name"]').text('Folder name');
     $('#modal-title').text('Create new folder');
     $('.modified').hide();
@@ -125,6 +131,30 @@ const addSubmitFormEvent = (state: HomeState) => {
             }
           });
         }
+      }
+    }
+
+    if (action === 'edit') {
+      if (type === 'folder') {
+        const userInfo = getUserInfo();
+        const folderUpdate: FolderForUpdate = {
+          id: <number>homeState.editingFolderId,
+          name: $('#name').val() as string,
+          modifiedBy: userInfo.name || ''
+        };
+
+        renderSpinner();
+        folderHelper.updateFolder(folderUpdate, data => {
+          removeSpinner();
+          if (data.error) {
+            // process error when updating
+          } else {
+            state.setEditingFolderId(null);
+            $('#modal-form').modal('hide');
+            clearInput();
+            renderTable(state);
+          }
+        });
       }
     }
   });

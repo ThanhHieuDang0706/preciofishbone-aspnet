@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.Resource;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 using PrecioFishboneVietnamASP.NETTraining.Services;
@@ -31,7 +29,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             {
                 // check if parentFolderId Exists
                 var folder = await _itemRepository.GetFolder(folderId);
-                
+
                 if (folder == null)
                 {
                     return NotFound(new
@@ -75,8 +73,26 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
             return CreatedAtRoute("GetFolderById", new { folderId = folderToReturn.Id }, folderToReturn);
         }
 
-        [HttpDelete("{folderId}")]
+        [HttpPut()]
+        [Authorize(Policy = "RequireAdmin")]
+        public async Task<IActionResult> UpdateFolder(FolderForUpdateDto folderUpdate)
+        {
+            int folderId = folderUpdate.Id;
+            var folder = await _itemRepository.GetFolder(folderId);
+            if (folder == null)
+            {
+                return NotFound(new
+                {
+                    Message = "The folder you try to update may have been removed!"
+                });
+            }
+            await _itemRepository.UpdateFolder(folderUpdate);
+            await _itemRepository.SaveAsync();
+            return NoContent();
+        }
 
+
+        [HttpDelete("{folderId}")]
         [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteFolder(int folderId)
         {

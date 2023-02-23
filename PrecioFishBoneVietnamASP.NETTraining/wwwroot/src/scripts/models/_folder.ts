@@ -3,6 +3,7 @@ import IFile from '../types/_file';
 import { ItemType } from '../types/_item';
 import FolderServices from '../services/_folderServices';
 import IFolderServices from '../services/_IFolderServices';
+import FolderForUpdate from '../types/_folderForUpdate';
 
 export default class Folder implements IFolder {
   id: number;
@@ -93,6 +94,15 @@ export class FolderHelper {
     try {
       await this.folderService.deleteFolder(folderId);
       cb({ data: { message: 'Delete successfully.' } });
+    } catch (error) {
+      return cb({ error });
+    }
+  };
+
+  updateFolder = async (folder: FolderForUpdate, cb: (data: any) => void) => {
+    try {
+      await this.folderService.updateFolder(folder);
+      cb({ data: { message: 'Update successfully.' } });
     } catch (error) {
       return cb({ error });
     }
