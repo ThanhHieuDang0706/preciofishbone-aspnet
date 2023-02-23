@@ -32,7 +32,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Controllers
 
         [HttpPost("upload")]
         [Authorize(Policy = "RequireAdmin")]
-        public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm, int folderId)
+        public async Task<IActionResult> UploadFile([FromForm]FileForCreationDto fileForm)
         {
             var fileEntity = await _itemRepository.UploadFile(fileForm);
 
