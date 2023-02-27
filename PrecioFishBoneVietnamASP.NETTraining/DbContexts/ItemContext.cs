@@ -8,14 +8,13 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
         public DbSet<Folder> Folders { get; set; } = null!;
         public DbSet<MyFile> Files { get; set; } = null!;
 
-        public ItemContext (DbContextOptions<ItemContext> options)
+        public ItemContext(DbContextOptions<ItemContext> options)
             : base(options)
         {
-
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Folders)
                 .WithOne(folder => folder.ParentFolder)
