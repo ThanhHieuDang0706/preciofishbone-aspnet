@@ -34,7 +34,6 @@ export const defaultFileIcon = '<i class="text-secondary fa fa-light fa-file"></
 export const folderIcon = '<i class="fa fa-regular fa-folder-open"></i>';
 
 export const mapFileExtensionToIcon = (fileExtension: string): string => {
-  console.log(fileExtensionToIconMapper[fileExtension.slice(1) as keyof Record<string, string>] || defaultFileIcon);
   return fileExtensionToIconMapper[fileExtension.slice(1) as keyof Record<string, string>] || defaultFileIcon;
 };
 
