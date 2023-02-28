@@ -29,7 +29,9 @@ class FileServices implements IFileServices {
   };
 
   downloadFile = async (fileId: number) => {
-    const response = await axios.get(`/api/files/${fileId}/download`);
+    const response = await axios.get(`/api/files/${fileId}/download`, {
+      responseType: 'arraybuffer'
+    });
     return response;
   };
 }

@@ -5,7 +5,5 @@ export function downloadFileWithId(res: Record<string, any>, fileMapper: Record<
   const link = document.createElement('a');
   link.href = window.URL.createObjectURL(blob);
   link.download = `${fileMapper[id].name}${fileMapper[id].fileExtension}`;
-  document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
 }
