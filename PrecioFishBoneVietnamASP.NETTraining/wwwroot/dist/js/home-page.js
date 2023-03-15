@@ -60766,12 +60766,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "msalConfig", function() { return msalConfig; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginRequest", function() { return loginRequest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "tokenRequest", function() { return tokenRequest; });
+const redirectUrl = 'https://hieudang.azurewebsites.net/';
 const msalConfig = {
   auth: {
     clientId: '8dc36eea-531c-4787-8e9b-38de4db29624',
     authority: 'https://login.microsoftonline.com/ccb176fe-8010-4cf0-a10c-0a3c789a1cef',
-    redirectUri: 'https://localhost:7214/index.html',
-    postLogoutRedirectUri: 'https://localhost:7214/index.html'
+    redirectUri: redirectUrl,
+    postLogoutRedirectUri: redirectUrl
   },
   cache: {
     cacheLocation: 'localStorage',

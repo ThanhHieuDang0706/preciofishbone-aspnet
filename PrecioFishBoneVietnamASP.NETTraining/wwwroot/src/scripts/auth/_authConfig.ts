@@ -1,11 +1,13 @@
 import { RedirectRequest } from '@azure/msal-browser';
 
+const redirectUrl = 'https://hieudang.azurewebsites.net/';
+
 const msalConfig = {
   auth: {
     clientId: '8dc36eea-531c-4787-8e9b-38de4db29624',
     authority: 'https://login.microsoftonline.com/ccb176fe-8010-4cf0-a10c-0a3c789a1cef',
-    redirectUri: 'https://localhost:7214/index.html',
-    postLogoutRedirectUri: 'https://localhost:7214/index.html'
+    redirectUri: redirectUrl,
+    postLogoutRedirectUri: redirectUrl
   },
   cache: {
     cacheLocation: 'localStorage', // This configures where your cache will be stored
