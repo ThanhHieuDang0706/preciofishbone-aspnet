@@ -79,8 +79,10 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
         public async Task UpdateFile(FileForUpdateDto file)
         {
             var fileEntity = await _context.Files.Where(f => f.Id == file.Id).FirstOrDefaultAsync();
+            
             if (fileEntity != null)
             {
+                fileEntity.Modified = DateTime.Now;
                 _mapper.Map(file, fileEntity);
             }
         }
@@ -127,6 +129,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
             var folder = await _context.Folders.Where(f => f.Id == folderUpdate.Id).FirstOrDefaultAsync();
             if (folder != null)
             {
+                folder.Modified = DateTime.Now;
                 _mapper.Map(folderUpdate, folder);
             }
         }

@@ -14,9 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
 builder.Services.AddDbContext<ItemContext>
     (dbContextOptions => dbContextOptions.UseSqlServer(
         builder.Configuration["ConnectionStrings:ASPTrainingDBConnectionString"]));
@@ -30,6 +29,7 @@ builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
+// ! Auth
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin",
