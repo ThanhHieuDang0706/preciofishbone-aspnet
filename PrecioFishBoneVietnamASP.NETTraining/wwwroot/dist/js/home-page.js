@@ -61948,9 +61948,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const API_BASE_URL = 'https://localhost';
-const PORT = 7214;
-const API_URL = `${API_BASE_URL}:${PORT}`;
+const API_URL = `https://hieudang.azurewebsites.net`;
 const axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0__["default"].create({
   baseURL: API_URL,
   headers: {
