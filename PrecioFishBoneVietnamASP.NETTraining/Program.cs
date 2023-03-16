@@ -19,7 +19,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddDbContext<ItemContext>
     (dbContextOptions => dbContextOptions.UseSqlServer(
-        builder.Configuration["ConnectionStrings:ASPTrainingDBConnectionString"]));
+        builder.Configuration["ConnectionStrings:SQLAZURECONNSTR_ASPTrainingDBConnectionString"]));
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
