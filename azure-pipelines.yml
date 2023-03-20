@@ -32,13 +32,20 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
     
+   
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: true
+ 
     
 - task: AzureRmWebAppDeployment@4
   inputs:
@@ -46,3 +53,5 @@ steps:
     PublishProfilePath: '$(System.DefaultWorkingDirectory)/**/*.pubxml'
     PublishProfilePassword: 'ChangeMe#123'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    
+- task: PublishBuildArtifacts@1
