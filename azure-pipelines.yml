@@ -16,7 +16,7 @@ variables:
 
 steps:
        
-- script: pwd
+- script: ls
   displayName: 'Print current working directory'
 - task: AzureRmWebAppDeployment@4
   inputs:
