@@ -11,6 +11,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
         public ItemContext(DbContextOptions<ItemContext> options)
             : base(options)
         {
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
