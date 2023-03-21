@@ -27,7 +27,8 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
- 
+   
+ - task: PublishBuildArtifacts@1
     
 - task: AzureRmWebAppDeployment@4
   inputs:
@@ -36,4 +37,4 @@ steps:
     PublishProfilePassword: 'ChangeMe#123'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     
-- task: PublishBuildArtifacts@1
+
