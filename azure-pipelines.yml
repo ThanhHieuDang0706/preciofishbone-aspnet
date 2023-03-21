@@ -24,18 +24,13 @@ steps:
     command: custom
     custom: 'tool '
     arguments: install dotnet-ef
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: $(BuildParameters.RestoreBuildProjects)
 
 - task: DotNetCoreCLI@2
   displayName: Create SQL Scripts
   inputs:
     command: custom
     custom: 'ef '
-    arguments: migrations script --output $(Build.SourcesDirectory)/SQL/item.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemDbContext
+    arguments: migrations script --output $(Build.SourcesDirectory)/SQL/item.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemContext
 
 - task: DotNetCoreCLI@2
   displayName: Publish
