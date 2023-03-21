@@ -14,7 +14,9 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   projectName: 'PrecioFishBoneVietnamASP.NETTraining'
-
+  
+  
+steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
@@ -22,7 +24,7 @@ variables:
     command: 'publish'
     publishWebProjects: true
     
-steps:
+
 - script: ls
   displayName: 'Print current working directory'
 - task: AzureRmWebAppDeployment@4
