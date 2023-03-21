@@ -30,7 +30,7 @@ steps:
   inputs:
     command: custom
     custom: 'ef '
-    arguments: migrations script --output $(Build.SourcesDirectory)/SQL/item.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemDbContext
+    arguments: migrations script --output $(Build.SourcesDirectory)/SQL/item.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemContext
 
 - task: DotNetCoreCLI@2
   displayName: Publish
