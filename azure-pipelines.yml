@@ -30,11 +30,14 @@ steps:
    
 - task: PublishBuildArtifacts@1
     
+    
+- script: pwd
+  displayName: 'Print current working directory'
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'PublishProfile'
     PublishProfilePath: '$(System.DefaultWorkingDirectory)/**/*.pubxml'
     PublishProfilePassword: 'ChangeMe#123'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/Properties/PublishProfiles/*.zip'
     
 
