@@ -30,7 +30,7 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'PublishProfile'
-    PublishProfilePath: '$(System.DefaultWorkingDirectory)/${projectName}/Properties/PublishProfiles/*.pubxml'
+    PublishProfilePath: '$(System.DefaultWorkingDirectory)/$(projectName)/Properties/PublishProfiles/*.pubxml'
     PublishProfilePassword: 'ChangeMe#123'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     
