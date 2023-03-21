@@ -9,6 +9,6 @@
 
         public DateTime CreatedTime { get; set; } = DateTime.Now;
 
-        public IFormFile File { get; set; }
+        public IFormFile File { get; set; } = null!;
     }
 }

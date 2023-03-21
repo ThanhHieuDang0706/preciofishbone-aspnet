@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
+
+using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 {
@@ -16,6 +19,9 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // init table
+            modelBuilder.Entity<Folder>().ToTable(nameof(Folder));
+            modelBuilder.Entity<MyFile>().ToTable(nameof(MyFile));
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Folders)
                 .WithOne(folder => folder.ParentFolder)
@@ -30,6 +36,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 
             // initialize root folder
             modelBuilder.Entity<Folder>().HasData(Folder.TopFolder);
+            
             base.OnModelCreating(modelBuilder);
         }
     }

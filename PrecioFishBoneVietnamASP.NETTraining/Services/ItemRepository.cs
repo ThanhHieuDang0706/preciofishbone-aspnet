@@ -65,6 +65,7 @@ namespace PrecioFishboneVietnamASP.NETTraining.Services
                 .Where(file => file.Id == fileId)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
+        
         }
 
         public async Task DeleteFile(int fileId)

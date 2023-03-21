@@ -3,8 +3,8 @@
     public class FileForUpdateDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string FileExtension { get; set; }
-        public string ModifiedBy { get; set; }
+        public string Name { get; set; } = String.Empty;
+        public string FileExtension { get; set; } = String.Empty;
+        public string ModifiedBy { get; set; }= String.Empty;
     }
 }
