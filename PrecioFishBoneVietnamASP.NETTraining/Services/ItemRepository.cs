@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 using PrecioFishboneVietnamASP.NETTraining.Entities;
-using PrecioFishboneVietnamASP.NETTraining.Migrations;
 using PrecioFishboneVietnamASP.NETTraining.Models;
 
 namespace PrecioFishboneVietnamASP.NETTraining.Services
