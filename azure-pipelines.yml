@@ -30,21 +30,16 @@ steps:
   displayName: Create SQL Scripts
   
 - task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: $(BuildParameters.RestoreBuildProjects)
-- task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: $(BuildParameters.RestoreBuildProjects)
+    projects: $(Build.SourcesDirectory)
     arguments: --configuration $(BuildConfiguration)
 - task: DotNetCoreCLI@2
   displayName: Publish
   inputs:
     command: publish
     publishWebProjects: True
-    projects: $(BuildParameters.RestoreBuildProjects)
+    projects: $(Build.SourcesDirectory)
     arguments: --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)
     zipAfterPublish: True
 
