@@ -44,6 +44,12 @@ steps:
     zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
+  displayName: Publish publish profiles
+  inputs:
+    PathtoPublish: $(Build.SourcesDirectory)/Properties/PublishProfiles
+    ArtifactName: PublishProfiles
+
+- task: PublishBuildArtifacts@1
   displayName: Publish Artifact
   condition: succeededOrFailed()
   inputs:
