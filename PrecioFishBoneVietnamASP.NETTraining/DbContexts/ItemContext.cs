@@ -19,9 +19,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // init table
-            modelBuilder.Entity<Folder>().ToTable(nameof(Folder));
-            modelBuilder.Entity<MyFile>().ToTable(nameof(MyFile));
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Folders)
                 .WithOne(folder => folder.ParentFolder)
