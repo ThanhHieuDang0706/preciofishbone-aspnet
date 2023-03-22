@@ -19,11 +19,12 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Folders)
                 .WithOne(folder => folder.ParentFolder)
                 .HasForeignKey(folder => folder.ParentFolderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Files)

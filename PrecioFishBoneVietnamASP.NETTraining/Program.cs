@@ -38,7 +38,6 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin", "Viewer"));
 });
 
-
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
