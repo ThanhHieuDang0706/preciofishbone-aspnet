@@ -5,7 +5,7 @@ using Microsoft.Identity.Web;
 using PrecioFishboneVietnamASP.NETTraining.DbContexts;
 using PrecioFishboneVietnamASP.NETTraining.Services;
 
-
+ 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
