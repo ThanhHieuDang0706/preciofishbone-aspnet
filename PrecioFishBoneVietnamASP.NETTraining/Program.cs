@@ -23,7 +23,7 @@ builder.Services.AddDbContext<ItemContext>
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
-    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); 
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 
