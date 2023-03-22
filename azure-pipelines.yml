@@ -2,7 +2,7 @@ trigger:
 - deploy
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2022'
 
 variables:
   solution: '**/*.sln'
@@ -12,8 +12,12 @@ variables:
   publishProfile: 'hieudang - Web Deploy'
 
 steps:
-
-
+- task: UseDotNet@2
+  displayName: 'Install .NET 6 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '6.0.0'
+    performMultiLevelLookup: true
 - task: DotNetCoreCLI@2
   displayName: New Manifest for tool
   inputs:
