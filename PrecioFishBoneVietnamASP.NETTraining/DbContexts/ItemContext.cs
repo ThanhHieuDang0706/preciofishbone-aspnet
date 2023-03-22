@@ -18,7 +18,6 @@ namespace PrecioFishboneVietnamASP.NETTraining.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Folder>()
                 .HasMany(folder => folder.Folders)
                 .WithOne(folder => folder.ParentFolder)

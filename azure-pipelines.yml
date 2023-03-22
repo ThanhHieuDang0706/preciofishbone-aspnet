@@ -22,10 +22,7 @@ steps:
 - script: 'dotnet tool install --global dotnet-ef --version 6.0.0'
   displayName: Install EF Tool
 
-- script: 'dotnet ef migrations add migrateDb --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
-  displayName: 'Migration'
-
-- script: 'dotnet ef database update migrateDb --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
+- script: 'dotnet ef database update --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
   displayName: 'Update Database'
 
 - task: NuGetToolInstaller@1
