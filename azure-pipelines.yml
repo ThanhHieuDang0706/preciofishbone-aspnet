@@ -29,6 +29,8 @@ steps:
 - script: 'dotnet tool install --global dotnet-ef --version 6.0.0'
   displayName: Install EF Tool
 
+- script: 'ls'
+  displayName: Install EF Tool
 # - script: 'dotnet ef database update --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
 #   displayName: 'Update Database'
 
