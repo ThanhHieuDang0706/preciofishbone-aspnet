@@ -28,7 +28,12 @@ steps:
 
 - script: 'dotnet ef migrations script --output $(Build.SourcesDirectory)/SQL/genMigrationCode.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemContext'
   displayName: Create SQL Scripts
-
+  
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: $(BuildParameters.RestoreBuildProjects)
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
