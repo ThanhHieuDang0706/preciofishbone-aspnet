@@ -46,7 +46,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: Publish publish profiles
   inputs:
-    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles
+    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles/hieudang - Web Deploy.pubxml
     ArtifactName: PublishProfiles
 
 - task: PublishBuildArtifacts@1
