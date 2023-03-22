@@ -19,11 +19,12 @@ steps:
     version: '6.0.x'
     performMultiLevelLookup: true
 
-- task: PublishBuildArtifacts@1
-  displayName: Publish publish profiles
+- task: CopyFiles@2
+  displayName: Copy publish profile files
   inputs:
-    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles/hieudang - Web Deploy.pubxml
-    ArtifactName: PublishProfiles
+    sourceFolder: '$(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles'
+    contents: '*.pubxml'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - script: 'dotnet tool install --global dotnet-ef --version 6.0.0'
   displayName: Install EF Tool
