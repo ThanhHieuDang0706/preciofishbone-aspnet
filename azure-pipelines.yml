@@ -23,8 +23,8 @@ steps:
 - script: 'dotnet tool install --global dotnet-ef --version 6.0.0'
   displayName: Install EF Tool
 
-- script: 'dotnet ef database update --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
-  displayName: 'Update Database'
+# - script: 'dotnet ef database update --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj'
+#   displayName: 'Update Database'
 
 - script: 'dotnet ef migrations script --output $(Build.SourcesDirectory)/SQL/genMigrationCode.sql --idempotent --project $(Build.SourcesDirectory)/$(projectName)/$(projectName).csproj --context ItemContext'
   displayName: Create SQL Scripts
@@ -46,7 +46,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: Publish publish profiles
   inputs:
-    PathtoPublish: $(Build.SourcesDirectory)/Properties/PublishProfiles
+    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles
     ArtifactName: PublishProfiles
 
 - task: PublishBuildArtifacts@1
