@@ -19,6 +19,11 @@ steps:
     version: '6.0.x'
     performMultiLevelLookup: true
 
+- task: PublishBuildArtifacts@1
+  displayName: Publish publish profiles
+  inputs:
+    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles/hieudang - Web Deploy.pubxml
+    ArtifactName: PublishProfiles
 
 - script: 'dotnet tool install --global dotnet-ef --version 6.0.0'
   displayName: Install EF Tool
@@ -43,11 +48,6 @@ steps:
     arguments: --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)
     zipAfterPublish: True
 
-- task: PublishBuildArtifacts@1
-  displayName: Publish publish profiles
-  inputs:
-    PathtoPublish: $(Build.SourcesDirectory)/$(projectName)/Properties/PublishProfiles/hieudang - Web Deploy.pubxml
-    ArtifactName: PublishProfiles
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifact
