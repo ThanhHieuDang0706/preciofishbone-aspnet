@@ -12,6 +12,8 @@ variables:
   publishProfile: 'hieudang - Web Deploy'
 
 steps:
+
+
 - task: DotNetCoreCLI@2
   displayName: New Manifest for tool
   inputs:
@@ -23,7 +25,7 @@ steps:
   inputs:
     command: custom
     custom: 'tool '
-    arguments: install dotnet-ef
+    arguments: install dotnet-ef --version 6.0.0
 
 - task: DotNetCoreCLI@2
   displayName: Create SQL Scripts
@@ -64,6 +66,3 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:PublishProfile="$(publishProfile)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-
-
